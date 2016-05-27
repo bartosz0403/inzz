@@ -1,0 +1,98 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_fifo2.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module usb1_fifo2
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_crc5.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module usb1_crc5
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_crc16.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module usb1_crc16
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_pe.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module usb1_pe
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_pd.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module usb1_pd
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_pa.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module usb1_pa
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_idma.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module usb1_idma
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/registers.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module bit_register
+INFO: [VRFC 10-311] analyzing module req_register
+INFO: [VRFC 10-311] analyzing module stat_register
+INFO: [VRFC 10-311] analyzing module generic_register
+INFO: [VRFC 10-311] analyzing module generic_intr_stat_reg
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/generic_dpram.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module generic_dpram
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb_tx_phy.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module usb_tx_phy
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb_rx_phy.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module usb_rx_phy
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_utmi_if.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module usb1_utmi_if
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_rom1.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module usb1_rom1
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_pl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module usb1_pl
+INFO: [VRFC 10-2458] undeclared symbol int_upid_set, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_pl.v:410]
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_ctrl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module usb1_ctrl
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/uart_txfsm.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module uart_txfsm
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/uart_rxfsm.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module uart_rxfsm
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/uart_cfg.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module uart_cfg
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/sync_fifo.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module sync_fifo
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/generic_fifo_sc_a.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module generic_fifo_sc_a
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/double_sync_low.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module double_sync_low
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/clk_ctl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module clk_ctl
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/async_fifo.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module async_fifo
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb_phy.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module usb_phy
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_core.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module usb1_core
+INFO: [VRFC 10-2458] undeclared symbol rx_ctrl_dvalid, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_core.v:484]
+INFO: [VRFC 10-2458] undeclared symbol rx_ctrl_ddone, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_core.v:485]
+INFO: [VRFC 10-2458] undeclared symbol idma_re, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_core.v:487]
+INFO: [VRFC 10-2458] undeclared symbol idma_we, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_core.v:488]
+INFO: [VRFC 10-2458] undeclared symbol ep0_full, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_core.v:572]
+INFO: [VRFC 10-2458] undeclared symbol ep0_empty, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_core.v:588]
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/uart_core.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module uart_core
+INFO: [VRFC 10-2458] undeclared symbol app_tx_fifo_full, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/uart_core.v:150]
+INFO: [VRFC 10-2458] undeclared symbol tx_fifo_wr_en, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/uart_core.v:151]
+INFO: [VRFC 10-2458] undeclared symbol app_rxfifo_empty, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/uart_core.v:154]
+INFO: [VRFC 10-2458] undeclared symbol app_rxfifo_rd_en, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/uart_core.v:155]
+INFO: [VRFC 10-2458] undeclared symbol tx_fifo_rd_empty, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/uart_core.v:194]
+INFO: [VRFC 10-2458] undeclared symbol tx_fifo_rd, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/uart_core.v:195]
+INFO: [VRFC 10-2458] undeclared symbol rx_fifo_wr_full, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/uart_core.v:214]
+INFO: [VRFC 10-2458] undeclared symbol rx_fifo_wr, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/uart_core.v:215]
+INFO: [VRFC 10-2458] undeclared symbol si_ss, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/uart_core.v:219]
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb_apb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module usb_apb
+WARNING: [VRFC 10-2379] empty port in module declaration [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb_apb.v:60]
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/core.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module core
+WARNING: [VRFC 10-2379] empty port in module declaration [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/core.v:157]
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb_agent.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module usb_agent
+INFO: [VRFC 10-311] analyzing module host_usb_bfm
+INFO: [VRFC 10-311] analyzing module usb_bfm_decoder
+INFO: [VRFC 10-311] analyzing module usb_bfm_encoder
+INFO: [VRFC 10-311] analyzing module usb_bfm_dpll
+INFO: [VRFC 10-311] analyzing module usb_bfm_clk_switch
+INFO: [VRFC 10-311] analyzing module usb_bfm_nrzi2nrz
+INFO: [VRFC 10-311] analyzing module usb_bfm_ph_detect
+INFO: [VRFC 10-311] analyzing module usb_bfm_pulse_puller
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/uart_agent.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module uart_agent
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/test_control.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module test_control
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/tb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tb
+INFO: [VRFC 10-2458] undeclared symbol uart_txd, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/tb.v:227]
+INFO: [VRFC 10-2458] undeclared symbol uart_rxd, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/tb.v:228]
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.sim/sim_1/behav/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
