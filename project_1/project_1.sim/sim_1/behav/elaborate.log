@@ -118,6 +118,7 @@ Compiling module xil_defaultlib.usb_bfm_dpll
 Compiling module xil_defaultlib.host_usb_bfm
 Compiling module xil_defaultlib.usb_agent
 Compiling module xil_defaultlib.uart_agent
+Compiling module xil_defaultlib.apb_agent
 Compiling module xil_defaultlib.test_control
 Compiling module xil_defaultlib.tb
 Compiling module xil_defaultlib.glbl

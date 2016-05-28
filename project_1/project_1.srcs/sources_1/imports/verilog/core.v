@@ -163,7 +163,9 @@ module core(
 
 
 
-
+		// UTMI Interface
+		DataOut, TxValid, TxReady, RxValid,
+		RxActive, RxError, DataIn, LineState,
 
         );      
 //-----------------//
@@ -310,6 +312,16 @@ wire    [6:0]   ep1_bf_size;
 //------------------------------------
 // UTMI Interface
 // -----------------------------------
+
+output	[7:0]	DataOut;
+output		TxValid;
+input		TxReady;
+input	[7:0]	DataIn;
+input		RxValid;
+input		RxActive;
+input		RxError;
+input	[1:0]	LineState;
+
 wire    [7:0]   DataOut;
 wire        TxValid;
 wire        TxReady;

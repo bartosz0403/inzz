@@ -49,22 +49,49 @@ module tb;
 `include "usb_test1.v"
 `include "usb_test2.v"
 `include "usb_test3.v"
+`include "usb_test5.v"
 wire  usb_txoe,usb_txdp,usb_txdn;
 
 wire dpls = (usb_txoe == 1'b0) ? usb_txdp : 1'bz;// przypisanie core do agenta d+
 wire dmns = (usb_txoe == 1'b0) ? usb_txdn : 1'bz;// przypisanie core do agenta d-
 
+       	
+wire    [7:0]   DataOut;
+wire        TxValid;
+wire     TxReady;
+wire     [7:0]   DataIn;
+wire         RxValid;
+wire        RxActive;
+wire        RxError;
+wire     [1:0]   LineState;
+
+
+
+
+
+
+
+
+
+
+wire        clk;
+wire        rst;
+wire        phy_tx_mode;
+wire        usb_rst;
+reg   [7:0]   ep1_din_d;
+
+
 
 
 
 //AMBA signals
-reg PSEL;
-reg PENABLE;
- reg [`USB_APB_ADDRESS_WIDTH-1:0] PADDR;
- reg PWRITE;
- reg [`USB_APB_DATA_REGISTER_WIDTH - 1 : 0] PWDATA;
- wire PREADY;
- wire [`USB_APB_DATA_REGISTER_WIDTH - 1 : 0] PRDATA;
+wire PSEL;
+wire PENABLE;
+wire [`USB_APB_ADDRESS_WIDTH-1:0] PADDR;
+wire PWRITE;
+wire [`USB_APB_DATA_REGISTER_WIDTH - 1 : 0] PWDATA;
+wire PREADY;
+wire [`USB_APB_DATA_REGISTER_WIDTH - 1 : 0] PRDATA;
 
 pullup(dpls); // Full Speed Device Indication
 //pulldown(dmns);
@@ -94,7 +121,7 @@ always begin
      #USB_BP_PER     usb_48mhz_clk <= 1'b0;
      #USB_BP_PER     usb_48mhz_clk <= 1'b1;
 end
-
+/*
 always begin
 #500000
 PWRITE <= 1'b1;
@@ -109,7 +136,7 @@ PWRITE <= 1'b1;
 
 end
 
-
+*/
 
 
 wire usb_rxd = ((dpls == 1) && (dmns == 0)) ? 1'b1:
@@ -250,13 +277,21 @@ core dut(
        	
     // slave assert   	
      .PREADY(PREADY),
-	 .PRDATA(PRDATA) // dane
-       	
-       	
+	 .PRDATA(PRDATA), // dane
+
+
+        // UTMI Interface
+                    .DataIn           ( DataIn            ),
+                    .RxValid          ( RxValid           ),
+                    .RxActive         ( RxActive          ),
+                    .RxError         ( RxError           ),
+                    .DataOut          ( DataOut           ),
+                    .TxValid          ( TxValid           ),
+                    .TxReady          ( TxReady           ),
+                    .LineState        ( LineState         )
        	
 
 	); 		
-
 
 
 usb_agent u_usb_agent(
@@ -268,6 +303,25 @@ uart_agent u_uart_agent(
 	.test_clk (usb_48mhz_clk),
 	.sin     (uart_rxd),
 	.sout    (uart_txd)
+     );
+     
+     
+     
+ 
+apb_agent u_apb_agent(
+
+///-------AMBA signals APB ASSERT--------------//
+    .PSEL(PSEL),
+	.PWRITE(PWRITE),
+	.PENABLE(PENABLE),
+	.PADDR(PADDR),
+	.PWDATA(PWDATA),// dane 
+       	
+    // slave assert   	
+     .PREADY(PREADY),
+	 .PRDATA(PRDATA), // dane
+	///_____________OUT SLAVE ASSIGN ___________//
+.PCLK(usb_48mhz_clk)
      );
 test_control test_control();
 /*
@@ -288,14 +342,11 @@ begin
 	#1000
 //	usb_test1;
 //	usb_test2;
-//usb_test3;
+usb_test3;
 
+//usb_test4;
 
-	
-	
-	
-	
-usb_test4;
+//usb_test5;
 	$finish;
 end
 
@@ -344,7 +395,11 @@ parameter  MYACK   = 4'b0000,
     
   #500000
   `usbbfm.in_token(address,endpt);  
-  
+    #500;
+     tb.u_apb_agent.write_char (8'b00110000);
+    
+     #5000;
+     tb.u_apb_agent.write_char (8'b00111100);
 //`usbbfm.send_cos;
     #600000;
 

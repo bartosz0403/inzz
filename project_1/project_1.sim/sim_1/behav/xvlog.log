@@ -73,9 +73,11 @@ INFO: [VRFC 10-2458] undeclared symbol si_ss, assumed default net type wire [/ho
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb_apb.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module usb_apb
 WARNING: [VRFC 10-2379] empty port in module declaration [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb_apb.v:81]
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/test_control.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module test_control
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/core.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module core
-WARNING: [VRFC 10-2379] empty port in module declaration [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/core.v:168]
+WARNING: [VRFC 10-2379] empty port in module declaration [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/core.v:170]
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb_agent.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module usb_agent
 INFO: [VRFC 10-311] analyzing module host_usb_bfm
@@ -88,11 +90,11 @@ INFO: [VRFC 10-311] analyzing module usb_bfm_ph_detect
 INFO: [VRFC 10-311] analyzing module usb_bfm_pulse_puller
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/uart_agent.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module uart_agent
-INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/test_control.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module test_control
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/apb_agent.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module apb_agent
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/tb.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module tb
-INFO: [VRFC 10-2458] undeclared symbol uart_txd, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/tb.v:241]
-INFO: [VRFC 10-2458] undeclared symbol uart_rxd, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/tb.v:242]
+INFO: [VRFC 10-2458] undeclared symbol uart_txd, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/tb.v:268]
+INFO: [VRFC 10-2458] undeclared symbol uart_rxd, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/tb.v:269]
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.sim/sim_1/behav/glbl.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module glbl

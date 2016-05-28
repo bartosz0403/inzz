@@ -291,6 +291,15 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PSRCDIR/sources_1/imports/verilog/test_control.v">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../verilog/test_control.v"/>
+          <Attr Name="ImportTime" Val="1364137707"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PSRCDIR/sources_1/imports/verilog/core.v">
         <FileInfo>
           <Attr Name="ImportPath" Val="$PPRDIR/../verilog/core.v"/>
@@ -318,20 +327,17 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/imports/verilog/test_control.v">
+      <File Path="$PSRCDIR/sources_1/imports/verilog/apb_agent.v">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../verilog/test_control.v"/>
-          <Attr Name="ImportTime" Val="1364137707"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/imports/verilog/usb_test3.v">
-        <FileInfo SFType="VHeader">
-          <Attr Name="ImportPath" Val="$PPRDIR/../verilog/usb_test3.v"/>
-          <Attr Name="ImportTime" Val="1364137707"/>
+      <File Path="$PSRCDIR/sources_1/imports/verilog/usb_test5.v">
+        <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
@@ -347,6 +353,14 @@
         <FileInfo SFType="VHeader">
           <Attr Name="ImportPath" Val="$PPRDIR/../verilog/usb_test1.v"/>
           <Attr Name="ImportTime" Val="1463354618"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/verilog/usb_test3.v">
+        <FileInfo SFType="VHeader">
+          <Attr Name="ImportPath" Val="$PPRDIR/../verilog/usb_test3.v"/>
+          <Attr Name="ImportTime" Val="1364137707"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
@@ -439,6 +453,11 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PPRDIR/tb_behav3.wcfg">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
         <Option Name="TopModule" Val="tb"/>
@@ -448,6 +467,7 @@
         <Option Name="XSimWcfgFile" Val="$PPRDIR/tb_behav.wcfg"/>
         <Option Name="XSimWcfgFile" Val="$PPRDIR/tb_behav1.wcfg"/>
         <Option Name="XSimWcfgFile" Val="$PPRDIR/tb_behav2.wcfg"/>
+        <Option Name="XSimWcfgFile" Val="$PPRDIR/tb_behav3.wcfg"/>
         <Option Name="xsim.simulate.runtime" Val="1ns"/>
       </Config>
     </FileSet>
