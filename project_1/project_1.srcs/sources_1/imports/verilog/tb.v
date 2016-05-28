@@ -97,13 +97,13 @@ end
 
 always begin
 #500000
-//	PWRITE <= 1'b1;
- //  PADDR <= `USB_APB_PERIOD_REG_ADDR_DF;
+PWRITE <= 1'b1;
+   PADDR <= `USB_APB_PERIOD_REG_ADDR_DF;
    
    
    
-   //PSEL  <= 1'b1;
-    //PENABLE <= 1'b1;
+   PSEL  <= 1'b1;
+    PENABLE <= 1'b1;
 
 	PWDATA <=   8'b01010111;
 

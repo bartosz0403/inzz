@@ -123,7 +123,7 @@ assign PREADY = 1'b1;
 
 
 
-/*
+
 
 ///---------------------STROBE-----------------------------------------------///
 reg reg_STROBE;
@@ -151,7 +151,7 @@ always @(posedge PCLK or negedge PRESETn) begin
     end else begin
         if((PWRITE == 1'b1) && (reg_STROBE == 1'b1) && (PADDR == `USB_APB_PERIOD_REG_ADDR_DF)  && (ep1_re == 1'b1)) begin
            ep1_din <= PWDATA;
-           ep1_empty <= 1'b1;
+           ep1_empty <= 1'b0;
         end
     end
 end
@@ -169,7 +169,7 @@ always @(posedge PCLK or negedge PRESETn) begin
         
         
     PRDATA <= ep1_dout;
-  ep1_full <= 1'b1;
+  ep1_full <= 1'b0;
 
         
 		end
@@ -179,11 +179,11 @@ end
 ///---------------------------OUT DATA - TO ENDPOINT ----------------------------///
 
 
-*/
+
 always @(posedge PCLK or negedge PRESETn) begin
  ep1_empty <= 1'b0;
-    PRDATA <= ep1_dout;
- ep1_din <= PWDATA;
+  //  PRDATA <= ep1_dout;
+ //ep1_din <= PWDATA;
    ep1_full <= 1'b0;
 end
 
