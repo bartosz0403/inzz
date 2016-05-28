@@ -111,5 +111,8 @@ write_data[1] = $random;
 
    #100
    tb.u_uart_agent.report_status(rx_nu, tx_nu);
+   
+     #1000000;
 end
+
 endtask

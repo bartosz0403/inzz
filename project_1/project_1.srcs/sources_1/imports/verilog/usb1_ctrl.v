@@ -71,11 +71,12 @@
 
 module usb1_ctrl(	clk, rst,
 
-			rom_adr, rom_data,
+			rom_adr, rom_data, // deskryptory
 
-			ctrl_setup, ctrl_in, ctrl_out,
+			ctrl_setup, ctrl_in, ctrl_out, //protocol layer
 
-			rx_ctrl_data, rx_ctrl_dvalid,rx_ctrl_ddone,
+	///nie uzywane	
+		rx_ctrl_data, rx_ctrl_dvalid,rx_ctrl_ddone, // nie uzywane
 
 			ep0_din, ep0_dout, ep0_re, ep0_we, ep0_stat,
 			ep0_size,
@@ -105,10 +106,13 @@ input		ctrl_setup;
 input		ctrl_in;
 input		ctrl_out;
 
-
+// nie uywanr do usuniecoia
 input [7:0]     rx_ctrl_data; 
 input           rx_ctrl_dvalid;
 input           rx_ctrl_ddone;
+// nie uzywane do usuniecia 
+
+
 
 input	[7:0]	ep0_din;
 output	[7:0]	ep0_dout;

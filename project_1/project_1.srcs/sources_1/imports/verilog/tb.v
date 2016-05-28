@@ -55,12 +55,12 @@ wire dpls = (usb_txoe == 1'b0) ? usb_txdp : 1'bz;// przypisanie core do agenta d
 wire dmns = (usb_txoe == 1'b0) ? usb_txdn : 1'bz;// przypisanie core do agenta d-
 
 
-/*
+
 reg	[7:0]	apb_din;
 wire	[7:0]	apb_dout;
 wire		apb_we, apb_re;
 wire	apb_empty, apb_full;
-*/
+
 pullup(dpls); // Full Speed Device Indication
 //pulldown(dmns);
 
@@ -89,12 +89,13 @@ always begin
      #USB_BP_PER     usb_48mhz_clk <= 1'b0;
      #USB_BP_PER     usb_48mhz_clk <= 1'b1;
 end
-/*
+
 always begin
-	//apb_din <=   8'b01010111;
+#500000
+	apb_din <=   8'b01010111;
 end
 
-*/
+
 
 
 wire usb_rxd = ((dpls == 1) && (dmns == 0)) ? 1'b1:
@@ -139,12 +140,11 @@ core dut(
 	.ep1_we(					),
 	.ep1_full(		1'b0			),
 	// End point 1 'IN' FIFO i/f
-	.ep1_din(		8'h0		        ),
+	//.ep1_din(		8'h0		        ),
 	.ep1_re(		   		        ),
 	.ep1_empty(		1'b0     		),
 	.ep1_bf_en(		1'b0			),
 	.ep1_bf_size(		7'h0			),
-
 	// End point 2 configuration
 	.ep2_cfg(	`ISO  | `OUT | 14'd0256		),
 	// End point 2 'OUT' FIFO i/f
@@ -226,21 +226,21 @@ core dut(
         // Uart Line Interface
 	.uart_txd     (uart_txd),
 	.uart_rxd    (uart_rxd),
-	/*
+	
 					.apb_din(apb_din),  
                     .apb_we             (apb_we ), 
                     .apb_full           (   apb_full    ),
                     .apb_dout           ( apb_dout      ), 
                     .apb_re             ( apb_re    ), 
                     .apb_empty          (apb_empty)
-              */      
+               /*   
 					.apb_din(),  
                     .apb_we             ( ), 
                     .apb_full           (       ),
                     .apb_dout           (       ), 
                     .apb_re             (   ), 
                     .apb_empty          ( )
-
+*/
 	); 		
 
 
@@ -274,14 +274,14 @@ begin
 	#1000
 //	usb_test1;
 //	usb_test2;
-//	usb_test3;
+//usb_test3;
 
 
 	
 	
 	
 	
-	//usb_test4;
+usb_test4;
 	$finish;
 end
 
@@ -309,14 +309,30 @@ parameter  MYACK   = 4'b0000,
 
      begin
      address = 7'b111_1111;
-     endpt   = 4'b0000;
+     endpt   = 4'b0001;
   //  `usbbfm.modify_device_speed(1'b0);// 0 LOW SPEED
-    $display("%0d: USB Reset  -----", $time);
+
+
+  
+     $display("%0d: USB Reset  -----", $time);
     `usbbfm.usb_reset(48);
 
-  `usbbfm.in_token(address,endpt);
-`usbbfm.send_cos;
-    #5000;
+    $display("%0d: Set Address = 1 -----", $time);
+    `usbbfm.SetAddress (address);
+    `usbbfm.setup(7'h00, 4'h0, Status);
+    `usbbfm.printstatus(Status, MYACK);
+    `usbbfm.status_IN(7'h00, 4'b0000, Status);
+    `usbbfm.printstatus(Status, MYACK);
+    
+    
+    
+    
+    
+  #500000
+  `usbbfm.in_token(address,endpt);  
+  
+//`usbbfm.send_cos;
+    #600000;
 
 // `usbbfm.send_ack;
     tb.test_control.finish_test;

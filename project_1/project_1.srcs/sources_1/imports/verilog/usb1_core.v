@@ -509,7 +509,7 @@ usb1_ctrl  u4(	.clk(			clk_i			),
 		.ep0_dout(		ep0_ctrl_din		),
 		.ep0_re(		ep0_ctrl_re		),
 		.ep0_we(		ep0_ctrl_we		),
-		.ep0_stat(		ep0_ctrl_stat		),
+		.ep0_stat(		ep0_ctrl_stat		),//(2)fifo full (1) fifo empty
 		.ep0_size(		ep0_size		),
 
 		.send_stall(		send_stall		),

@@ -80,8 +80,8 @@ module core(
         ep_sel,
 
         // Endpoint Interface
-        ep1_cfg,
-        ep1_din,  
+      ep1_cfg,
+    //    ep1_din,  
         ep1_we, 
         ep1_full,
         ep1_dout, 
@@ -195,7 +195,7 @@ output  [3:0]   ep_sel;
 
 // Endpoint Interfaces
 input   [13:0]  ep1_cfg;
-input   [7:0]   ep1_din;
+//input   [7:0]   ep1_din;
 output  [7:0]   ep1_dout;
 output      ep1_we, ep1_re;
 input       ep1_empty, ep1_full;
@@ -272,6 +272,25 @@ wire       reg_ack;    // Register Ack
 ///////////////////////////////////////////////////////////////////
 // Local Wires and Registers
 ///////////////////////////////////////////////////////////////////
+
+
+wire   [13:0]  ep1_cfg;
+wire    [7:0]   ep1_din;
+wire   [7:0]   ep1_dout;
+wire       ep1_we, ep1_re;
+wire        ep1_empty, ep1_full;
+wire        ep1_bf_en;
+wire    [6:0]   ep1_bf_size;
+
+
+
+
+
+
+
+
+
+
 //------------------------------------
 // UTMI Interface
 // -----------------------------------
@@ -287,7 +306,7 @@ wire        clk;
 wire        rst;
 wire        phy_tx_mode;
 wire        usb_rst;
-    
+reg   [7:0]   ep1_din_d;
 usb_phy u_usb_phy(
                     .clk                ( clk_i             ),
                     .rst                ( rst_i             ),  
@@ -312,6 +331,8 @@ usb_phy u_usb_phy(
                     .TxReady_o          ( TxReady           ),
                     .LineState_o        ( LineState         )
         );
+
+
 
 
 usb1_core  u_usb_core(

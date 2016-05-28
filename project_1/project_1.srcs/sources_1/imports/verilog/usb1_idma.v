@@ -68,8 +68,8 @@ module usb1_idma(	clk, rst,
 		rd_next,
 
 		tx_valid,
-		tx_data_st_i,
-		tx_data_st_o,
+		tx_data_st_i,// wejscie odtx_data st z enpoitu
+		tx_data_st_o,//wyjscie z na packet assembler
 
 		// Protocol Engine
 		tx_dma_en, rx_dma_en, idma_done,
