@@ -56,10 +56,15 @@ wire dmns = (usb_txoe == 1'b0) ? usb_txdn : 1'bz;// przypisanie core do agenta d
 
 
 
-reg	[7:0]	apb_din;
-wire	[7:0]	apb_dout;
-wire		apb_we, apb_re;
-wire	apb_empty, apb_full;
+
+//AMBA signals
+reg PSEL;
+reg PENABLE;
+ reg [`USB_APB_ADDRESS_WIDTH-1:0] PADDR;
+ reg PWRITE;
+ reg [`USB_APB_DATA_REGISTER_WIDTH - 1 : 0] PWDATA;
+ wire PREADY;
+ wire [`USB_APB_DATA_REGISTER_WIDTH - 1 : 0] PRDATA;
 
 pullup(dpls); // Full Speed Device Indication
 //pulldown(dmns);
@@ -92,7 +97,16 @@ end
 
 always begin
 #500000
-	apb_din <=   8'b01010111;
+//	PWRITE <= 1'b1;
+ //  PADDR <= `USB_APB_PERIOD_REG_ADDR_DF;
+   
+   
+   
+   //PSEL  <= 1'b1;
+    //PENABLE <= 1'b1;
+
+	PWDATA <=   8'b01010111;
+
 end
 
 
@@ -227,20 +241,20 @@ core dut(
 	.uart_txd     (uart_txd),
 	.uart_rxd    (uart_rxd),
 	
-					.apb_din(apb_din),  
-                    .apb_we             (apb_we ), 
-                    .apb_full           (   apb_full    ),
-                    .apb_dout           ( apb_dout      ), 
-                    .apb_re             ( apb_re    ), 
-                    .apb_empty          (apb_empty)
-               /*   
-					.apb_din(),  
-                    .apb_we             ( ), 
-                    .apb_full           (       ),
-                    .apb_dout           (       ), 
-                    .apb_re             (   ), 
-                    .apb_empty          ( )
-*/
+
+	.PSEL(PSEL),
+	.PWRITE(PWRITE),
+	.PENABLE(PENABLE),
+	.PADDR(PADDR),
+	.PWDATA(PWDATA),// dane 
+       	
+    // slave assert   	
+     .PREADY(PREADY),
+	 .PRDATA(PRDATA) // dane
+       	
+       	
+       	
+
 	); 		
 
 

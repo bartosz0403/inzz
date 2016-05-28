@@ -46,7 +46,7 @@
 ////                                                              ////
 //////////////////////////////////////////////////////////////////////
 
-
+`include "usb1_defines.v"
 module core(
         clk_i, 
         rst_i,
@@ -145,10 +145,21 @@ module core(
 
 //AMBA
 
-		apb_din,  apb_we, apb_full,
-		apb_dout, apb_re, apb_empty,
+//	PCLK,
+//	PRESETn,
+///-------AMBA signals APB ASSERT--------------//
+	PSEL,
+	PENABLE,
+	PADDR,
+	PWRITE, // write / read =====>  1/0
+	PWDATA, /// ----- dane zapisywane
+///________________AMBA signals APB ASSERT__________________//	
 
 
+
+	///-----OUT SLAVE ASSIGN -------//
+	PREADY,
+	PRDATA,
 
 
 
@@ -159,11 +170,16 @@ module core(
  //AMBA       
 //-----------------//
 
-        
-       input	[7:0]	apb_din;
-output	[7:0]	apb_dout;
-output		apb_we, apb_re;
-input		apb_empty, apb_full; 
+
+//AMBA signals
+input wire PSEL;
+input wire PENABLE;
+input wire [`USB_APB_ADDRESS_WIDTH-1:0] PADDR;
+input wire PWRITE;
+input wire [`USB_APB_DATA_REGISTER_WIDTH - 1 : 0] PWDATA;
+output wire PREADY;
+output wire [`USB_APB_DATA_REGISTER_WIDTH - 1 : 0] PRDATA;
+
         
         
         
@@ -478,34 +494,33 @@ uart_core  u_uart_core
 
 usb_apb u_usb_apb
 
-     (  			.clk                ( clk_i             ),
+     (  			
                     .ep1_din            ( ep1_din           ),  
                     .ep1_we             ( ep1_we            ), 
                     .ep1_full           ( ep1_full          ),
                     .ep1_dout           ( ep1_dout          ), 
                     .ep1_re             ( ep1_re            ), 
                     .ep1_empty          ( ep1_empty         ),
-                    .apb_din            ( apb_din           ),  
-                    .apb_we             ( apb_we            ), 
-                    .apb_full           ( apb_full          ),
-                    .apb_dout           ( apb_dout          ), 
-                    .apb_re             ( apb_re            ), 
-                    .apb_empty          ( apb_empty         )
+
+
+
+
+
+
      
      
-	    /*	.PCLK(clk_i),
+	  	.PCLK(clk_i),
 			.PRESETn(rst_i),
-			.PSELx(),
-			.PWRITE(),
-			.PENABLE(),
-			.PADDR(),
-			.PREADY(),
-		.PSLVERR(),
+			.PSEL(PSEL),
+			.PWRITE(PWRITE),
+			.PENABLE(PENABLE),
+			.PADDR(PADDR),
+			.PREADY(PREADY),
+	//	.PSLVERR(),
        // Line Interface
-       	.PWDATA(uart_rxd),
-      	.PRDATA(uart_txd)
-      	*/
-      	
+       	.PWDATA(PWDATA)
+
+
       	
       	
       	

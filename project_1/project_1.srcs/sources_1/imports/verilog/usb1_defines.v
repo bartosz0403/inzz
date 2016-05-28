@@ -63,6 +63,8 @@
 //
 
 `include "timescale.v"
+`include "apb_config.v"
+
 
 //`define USBF_DEBUG
 //`define USBF_VERBOSE_DEBUG
