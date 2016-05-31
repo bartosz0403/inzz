@@ -57,11 +57,11 @@ module core(
         phy_tx_mode , // 1
         usb_rst,
 
-        // Interrupts
+ /*       // Interrupts
         dropped_frame, 
         misaligned_frame,
         crc16_err,
-
+*/
         // Vendor Features
         v_set_int, 
         v_set_feature, 
@@ -186,9 +186,10 @@ input       rst_i;
 
 input       phy_tx_mode;
 output      usb_rst;
+/*
 output          dropped_frame, misaligned_frame;
 output          crc16_err;
-
+*/
 output          v_set_int;
 output          v_set_feature;
 output  [15:0]  wValue;
@@ -346,11 +347,6 @@ usb1_core  u_usb_core(
                     .TxReady            ( TxReady           ),
                     .LineState          ( LineState         ),
 
-                 // Interrupts
-                    .dropped_frame      ( dropped_frame     ), 
-                    .misaligned_frame   ( misaligned_frame  ),
-                    .crc16_err          ( crc16_err         ),
-
                   // Vendor Features
                     .v_set_int          ( v_set_int         ), 
                     .v_set_feature      ( v_set_feature     ), 
@@ -445,30 +441,7 @@ usb1_core  u_usb_core(
 
 
         );      
-/*
-uart_core  u_uart_core
 
-     (  
-        .app_reset_n (rst_i),
-        .app_clk     (clk_i),
-
-        // Reg Bus Interface Signal
-        .reg_cs     (reg_req),
-        .reg_wr     (!reg_rdwrn),
-        .reg_addr   (reg_addr[5:2]),
-        .reg_wdata  (reg_wdata),
-        .reg_be     (4'hF),
-
-        // Outputs
-        .reg_rdata   (reg_rdata),
-        .reg_ack     (reg_ack),
-
-       // Line Interface
-        .si          (uart_rxd),
-        .so          (uart_txd)
-
-     );
-*/
 
 usb_apb u_usb_apb
 

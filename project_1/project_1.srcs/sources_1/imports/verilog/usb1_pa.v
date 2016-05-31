@@ -18,8 +18,8 @@ module usb1_pa(	clk, rst,
 		send_token, token_pid_sel,
 		send_data, data_pid_sel,
 
-		// IDMA Interface
-		tx_data_st, rd_next,
+		// IDMA Interface    //dane pobierane sa z dma
+		tx_data_st, rd_next, // flaga proszaca o kolejn bajt
 
 		ep_empty
 		);

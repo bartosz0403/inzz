@@ -28,7 +28,7 @@ module usb1_pe(	clk, rst,
 
 		// IDMA Interface
 		rx_dma_en, tx_dma_en,
-		abort,
+		//abort,
 		idma_done,
 
 		// Register File Interface
@@ -37,7 +37,8 @@ module usb1_pe(	clk, rst,
 		ep_sel, match, nse_err,
 		ep_full, ep_empty,
 
-		int_upid_set, int_crc16_set, int_to_set, int_seqerr_set,
+		//int_upid_set, 
+		int_crc16_set, int_to_set, int_seqerr_set,
 		csr,
 		send_stall
 
@@ -65,7 +66,7 @@ output	[1:0]	data_pid_sel;
 // IDMA Interface
 output		rx_dma_en;	// Allows the data to be stored
 output		tx_dma_en;	// Allows for data to be retrieved
-output		abort;		// Abort Transfer (time_out, crc_err or rx_error)
+//output		abort;		// Abort Transfer (time_out, crc_err or rx_error)
 input		idma_done;	// DMA is done indicator
 
 input		ep_full;	// Indicates the endpoints fifo is full
@@ -77,7 +78,7 @@ input	[3:0]	ep_sel;		// Endpoint Number Input
 input		match;		// Endpoint Matched
 output		nse_err;	// no such endpoint error
 
-output		int_upid_set;	// Set unsupported PID interrupt
+//output		int_upid_set;	// Set unsupported PID interrupt
 output		int_crc16_set;	// Set CRC16 error interrupt
 output		int_to_set;	// Set time out interrupt
 output		int_seqerr_set;	// Set PID sequence error interrupt

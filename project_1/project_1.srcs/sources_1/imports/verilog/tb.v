@@ -102,21 +102,6 @@ RxActive <= 1'b1;
 end
 
 endtask
-/*
-always begin
-#500000
-PWRITE <= 1'b1;
-   PADDR <= `USB_APB_PERIOD_REG_ADDR_DF;
-   
-   
-   
-   PSEL  <= 1'b1;
-    PENABLE <= 1'b1;
-
-	PWDATA <=   8'b01010111;
-
-end
-*/
 
 task delay;
 input [16:0] i;
@@ -137,10 +122,7 @@ core dut(
 	.phy_tx_mode(1'b1), 
         .usb_rst(),
 
-	// Interrupts
-	.dropped_frame(), 
-	.misaligned_frame(),
-	.crc16_err(),
+
 
 	// Vendor Features
 	.v_set_int(), 
@@ -349,20 +331,6 @@ endtask
 
 
 
-/*
-
-for (i = 1; i <= SetupDataLen; i = i + 1) begin 
-    in_out_buf[i] = XmitBuffer[i - 1];
-    tmpCrc = crc16(in_out_buf[i], tmpCrc);
-end
-//if (Debug) $display("In %0s raw crc is %h at time %0t", SelfName, tmpCrc, $time);
-tmpCrc = ~{swap8(tmpCrc[15:8]), swap8(tmpCrc[7:0]};
-
-*/
-
-
-
-
 
 
 
@@ -409,24 +377,7 @@ join
 end
 endtask
 
-/*
-task SetConfiguration;
-  input [1:0] cfg_val;
-begin
-    XmitBuffer[0] = 8'b0000_0000;
-    XmitBuffer[1] = 8'b0000_1001; // Set Configuration 09h
-    XmitBuffer[2] = {6'b000_000, cfg_val};
-    XmitBuffer[3] = 8'b0000_0000;
-    XmitBuffer[4] = 8'b0000_0000;
-    XmitBuffer[5] = 8'b0000_0000;
-    XmitBuffer[6] = 8'b0000_0000;
-    XmitBuffer[7] = 8'b0000_0000;
-        SendData(DATA0,8);
-end
-endtask
 
-
-*/
 
 
 
@@ -594,15 +545,9 @@ SetupDataLen = 8;
 	#3000
 	test_1;
 
-#40000
+#400
 //	usb_test1;
-//	usb_test2;
-//usb_test3;
 
-//usb_test4;
-
-//usb_test5;
-//usb_test6;
 	$finish;
 end
 

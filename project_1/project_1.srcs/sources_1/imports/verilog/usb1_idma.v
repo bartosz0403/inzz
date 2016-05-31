@@ -73,7 +73,7 @@ module usb1_idma(	clk, rst,
 
 		// Protocol Engine
 		tx_dma_en, rx_dma_en, idma_done,
-		ep_sel,
+	
 
 		// Register File Manager Interface
 		size,
@@ -81,8 +81,8 @@ module usb1_idma(	clk, rst,
 		tx_busy,
 
 		// Block Frames
-		ep_bf_en, ep_bf_size,
-		dropped_frame, misaligned_frame,
+
+	//	dropped_frame, misaligned_frame,
 
 		// Memory Arb interface
 		mwe, mre, ep_empty, ep_empty_int, ep_full
@@ -104,7 +104,7 @@ output	[7:0]	tx_data_st_o;
 input		tx_dma_en;
 input		rx_dma_en;
 output		idma_done;	// DMA is done
-input	[3:0]	ep_sel;
+
 
 // Register File Manager Interface
 input	[8:0]	size;		// MAX PL Size in bytes
@@ -112,10 +112,10 @@ output	[7:0]	rx_cnt;
 output		rx_done;
 output		tx_busy;
 
-input		ep_bf_en;
-input	[6:0]	ep_bf_size;
-output		dropped_frame;
-output		misaligned_frame;
+
+
+//output		dropped_frame;
+//output		misaligned_frame;
 
 // Memory Arb interface
 output		mwe;
@@ -158,90 +158,26 @@ reg		ep_empty_latched;
 wire		ep_empty_int;
 reg	[6:0]	ec;
 wire		ec_clr;
-reg		dropped_frame;
+//reg		dropped_frame;
 reg	[6:0]	rc_cnt;
 wire		rc_clr;
 reg		ep_full_latched;
 wire		ep_full_int;
-reg		misaligned_frame;
+//reg		misaligned_frame;
 reg		tx_valid_r;
 wire		tx_valid_e;
 
-///////////////////////////////////////////////////////////////////
-//
-// For IN Block Frames transmit frames in [ep_bf_size] byte quantities
-//
 
-`ifdef USB1_BF_ENABLE
-
-always @(posedge clk)
-	if(!rst)		ec <= #1 7'h0;
-	else
-	if(!ep_bf_en | ec_clr)	ec <= #1 7'h0;
-	else
-	if(mre)			ec <= #1 ec + 7'h1;
-
-assign ec_clr = (ec == ep_bf_size) | tx_dma_en; 
-
-always @(posedge clk)
-	if(!rst)	ep_empty_latched <= #1 1'b0;
-	else
-	if(ec_clr)	ep_empty_latched <= #1 ep_empty;
-
-assign ep_empty_int = ep_bf_en ? ep_empty_latched : ep_empty;
-`else
 assign ep_empty_int = ep_empty;
-`endif
-///////////////////////////////////////////////////////////////////
-//
-// For OUT Block Frames always store in [ep_bf_size] byte chunks
-// if fifo can't accept [ep_bf_size] bytes junk the entire [ep_bf_size]
-// byte frame
-//
 
-`ifdef USB1_BF_ENABLE
-always @(posedge clk)
-	if(!rst)		rc_cnt <= #1 7'h0;
-	else
-	if(!ep_bf_en | rc_clr)	rc_cnt <= #1 7'h0;
-	else
-	if(mwe_r)		rc_cnt <= #1 rc_cnt + 7'h1;
-
-assign rc_clr = ((rc_cnt == ep_bf_size) & mwe_r) | rx_dma_en; 
-
-always @(posedge clk)
-	if(!rst)	ep_full_latched <= #1 1'b0;
-	else
-	if(rc_clr)	ep_full_latched <= #1 ep_full;
-
-assign ep_full_int = ep_bf_en ? ep_full_latched : ep_full;
-
-always @(posedge clk)
-	dropped_frame <= #1 rc_clr & ep_full & ep_bf_en;
-
-always @(posedge clk)
-	misaligned_frame <= #1 rx_data_done_r & ep_bf_en & (rc_cnt!=7'd00);
-`else
 assign ep_full_int = ep_full;
-
+/*
 always @(posedge clk)
 	dropped_frame <= #1 1'b0;
 
 always @(posedge clk)
 	misaligned_frame <= #1 1'b0;
-
-`endif
-
-// synopsys translate_off
-`ifdef USBF_VERBOSE_DEBUG
-always @(posedge dropped_frame)
-	$display("WARNING: BF: Droped one OUT frame (no space in FIFO) (%t)",$time);
-
-always @(posedge misaligned_frame)
-	$display("WARNING: BF: Received misaligned frame (%t)",$time);
-`endif
-// synopsys translate_on
-
+*/
 ///////////////////////////////////////////////////////////////////
 //
 // FIFO interface

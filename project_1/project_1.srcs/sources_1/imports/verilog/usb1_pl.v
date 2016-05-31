@@ -29,8 +29,8 @@ module usb1_pl(	clk, rst,
 		ctrl_setup, ctrl_in, ctrl_out,
 
 		// Block Frames
-		ep_bf_en, ep_bf_size,
-		dropped_frame, misaligned_frame,
+		//ep_bf_en, ep_bf_size,
+		//dropped_frame, misaligned_frame,
 
 		// EP Interface
 		csr,
@@ -76,9 +76,9 @@ output		rx_done;
 output		ctrl_setup;
 output		ctrl_in;
 output		ctrl_out;
-input		ep_bf_en;
-input	[6:0]	ep_bf_size;
-output		dropped_frame, misaligned_frame;
+//input		ep_bf_en;
+//input	[6:0]	ep_bf_size;
+//output		dropped_frame, misaligned_frame;
 
 // Endpoint Interfaces
 input	[13:0]	csr;	
@@ -114,7 +114,7 @@ reg	[7:0]	rx_ctrl_data_d;
 wire		rx_ctrl_dvalid;
 wire		rx_ctrl_ddone;
 wire		crc16_err;
-wire		rx_seq_err;
+//wire		rx_seq_err;
 
 // Packet Assembler Interface
 wire		send_token;
@@ -262,7 +262,7 @@ usb1_pd	u0(	.clk(		clk		),
 		.rx_data_valid(	rx_ctrl_dvalid	),
 		.rx_data_done(	rx_ctrl_ddone	),
 		.crc16_err(	crc16_err	),
-		.seq_err(	rx_seq_err	),
+		//.seq_err(	rx_seq_err	),
 		.rx_busy(	rx_busy		)
 		);
 
@@ -296,12 +296,7 @@ usb1_idma
 
 		.tx_data_st_i(	tx_data_st	),
 		.tx_data_st_o(	tx_data_st_o	),
-		.ep_sel(	ep_sel		),
 
-		.ep_bf_en(	ep_bf_en	),
-		.ep_bf_size(	ep_bf_size	),
-		.dropped_frame(dropped_frame	),
-		.misaligned_frame(misaligned_frame),
 
 		.tx_busy(	tx_busy		),
 
@@ -343,7 +338,7 @@ usb1_pe
 		.data_pid_sel(		data_pid_sel		),
 		.rx_dma_en(		rx_dma_en		),
 		.tx_dma_en(		tx_dma_en		),
-		.abort(			abort			),
+		//.abort(			abort			),
 		.idma_done(		idma_done		),
 		.fsel(			fsel			),
 		.ep_sel(		ep_sel			),
@@ -351,7 +346,7 @@ usb1_pe
 		.ep_empty(		ep_empty		),
 		.match(			match_o			),
 		.nse_err(		nse_err			),
-		.int_upid_set(		int_upid_set		),
+		//.int_upid_set(		int_upid_set		),
 		.int_crc16_set(		int_crc16_set		),
 		.int_to_set(		int_to_set		),
 		.int_seqerr_set(	int_seqerr_set		),

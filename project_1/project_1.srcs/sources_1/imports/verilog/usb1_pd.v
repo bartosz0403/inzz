@@ -9,11 +9,11 @@
 module usb1_pd(	clk, rst,
 
 		// UTMI RX I/F
-		rx_data, rx_valid, rx_active, rx_err,
+		rx_data, rx_valid, rx_active, rx_err,   // dane pobierane z utmi
 
 		// PID Information
 		pid_OUT, pid_IN, pid_SOF, pid_SETUP,
-		pid_DATA0, pid_DATA1, pid_DATA2, pid_MDATA,
+		pid_DATA0, pid_DATA1, pid_DATA2, pid_MDATA,// flagi wyjsciowe sygnalizujace rodzaj nadeslanego pakietu
 		pid_ACK, pid_NACK, pid_STALL, pid_NYET,
 		pid_PRE, pid_ERR, pid_SPLIT, pid_PING,
 		pid_cks_err,
@@ -23,10 +23,11 @@ module usb1_pd(	clk, rst,
 		frame_no,
 
 		// Receive Data Output
-		rx_data_st, rx_data_valid, rx_data_done, crc16_err,
+		rx_data_st, rx_data_valid, rx_data_done, crc16_err, // dane wyjsciowe pozbawione znacznikow pakietow
 
 		// Misc.
-		seq_err, rx_busy
+		//seq_err, 
+		rx_busy
 		);
 
 input		clk, rst;
@@ -54,7 +55,7 @@ output		rx_data_valid;		// Data on rx_data_st is valid
 output		rx_data_done;		// Indicates end of a transfer
 output		crc16_err;		// Data packet CRC 16 error
 
-output		seq_err;		// State Machine Sequence Error
+//output		seq_err;		// State Machine Sequence Error
 output		rx_busy;		// Receivig Data Packet
 
 ///////////////////////////////////////////////////////////////////
@@ -71,7 +72,7 @@ parameter	[3:0]	// synopsys enum state
 reg	[3:0]	/* synopsys enum state */ state, next_state;
 // synopsys state_vector state
 
-reg	[7:0]	pid;			// Packet PDI
+reg	[7:0]	pid;			// Packet Pzid
 reg		pid_le_sm;		// PID Load enable from State Machine
 wire		pid_ld_en;		// Enable loading of PID (all conditions)
 wire		pid_cks_err;		// Indicates a pid checksum err
@@ -127,25 +128,25 @@ always @(posedge clk or negedge rst)
 always @(posedge clk)
 	rx_busy <= #1 rx_busy_d;
 
-// PID Decoding Logic
-assign pid_ld_en = pid_le_sm & rx_active & rx_valid;
+// PID Decoding Logic//State Machine  & PE & phy
+assign pid_ld_en = pid_le_sm & rx_active & rx_valid; // ustafienie flagi ze pid loadin enable
 
 always @(posedge clk or negedge rst)
 	if(!rst)		pid <= #1 8'hf0;
 	else
 	if(pid_ld_en)		pid <= #1 rx_data;
 
-assign	pid_cks_err = (pid[3:0] != ~pid[7:4]);
+assign	pid_cks_err = (pid[3:0] != ~pid[7:4]);   // sprawzenie warunku negacji  pid
 
 assign	pid_OUT   = pid[3:0] == `USBF_T_PID_OUT;
 assign	pid_IN    = pid[3:0] == `USBF_T_PID_IN;
 assign	pid_SOF   = pid[3:0] == `USBF_T_PID_SOF;
 assign	pid_SETUP = pid[3:0] == `USBF_T_PID_SETUP;
 assign	pid_DATA0 = pid[3:0] == `USBF_T_PID_DATA0;
-assign	pid_DATA1 = pid[3:0] == `USBF_T_PID_DATA1;
+assign	pid_DATA1 = pid[3:0] == `USBF_T_PID_DATA1;      //ustawienie flagi jaki pakied nadszedl
 assign	pid_DATA2 = pid[3:0] == `USBF_T_PID_DATA2;
 assign	pid_MDATA = pid[3:0] == `USBF_T_PID_MDATA;
-assign	pid_ACK   = pid[3:0] == `USBF_T_PID_ACK;
+assign	pid_ACK   = pid[3:0] == `USBF_T_PID_ACK;        
 assign	pid_NACK  = pid[3:0] == `USBF_T_PID_NACK;
 assign	pid_STALL = pid[3:0] == `USBF_T_PID_STALL;
 assign	pid_NYET  = pid[3:0] == `USBF_T_PID_NYET;
@@ -155,7 +156,7 @@ assign	pid_SPLIT = pid[3:0] == `USBF_T_PID_SPLIT;
 assign	pid_PING  = pid[3:0] == `USBF_T_PID_PING;
 assign	pid_RES   = pid[3:0] == `USBF_T_PID_RES;
 
-assign	pid_TOKEN = pid_OUT | pid_IN | pid_SOF | pid_SETUP | pid_PING;
+assign	pid_TOKEN = pid_OUT | pid_IN | pid_SOF | pid_SETUP | pid_PING;     // rodzaj pakiety Toke
 assign	pid_DATA = pid_DATA0 | pid_DATA1 | pid_DATA2 | pid_MDATA;
 
 // Token Decoding LOGIC
@@ -178,7 +179,7 @@ assign token_valid = token_valid_str1;
 
 // CRC 5 should perform the check in one cycle (flow through logic)
 // 11 bits and crc5 input, 1 bit output
-assign crc5_err = token_valid & (crc5_out2 != token_crc5);
+assign crc5_err = token_valid & (crc5_out2 != token_crc5);  // sprawdzenie czy crc ktore nadeszlo jest rowne obliczonemu 
 
 usb1_crc5 u0(
 	.crc_in(	5'h1f			),
@@ -199,7 +200,7 @@ usb1_crc5 u0(
 assign	crc5_out2 = ~{crc5_out[0], crc5_out[1], crc5_out[2], crc5_out[3],
 			crc5_out[4]};
 
-assign frame_no = { token1[2:0], token0};
+assign frame_no = { token1[2:0], token0};  // dla SOF
 assign token_fadr = token0[6:0];
 assign token_endp = {token1[2:0], token0[7]};
 assign token_crc5 = token1[7:3];
@@ -274,7 +275,7 @@ always @(state or rx_valid or rx_active or rx_err or pid_ACK or pid_TOKEN
 	token_le_2 = 1'b0;
 	data_valid_d = 1'b0;
 	data_done = 1'b0;
-	seq_err = 1'b0;
+	//seq_err = 1'b0;
 	pid_ack = 1'b0;
 	case(state)		// synopsys full_case parallel_case
 	   IDLE:
@@ -308,7 +309,7 @@ always @(state or rx_valid or rx_active or rx_err or pid_ACK or pid_TOKEN
 			if(	!rx_active | rx_err |
 				(rx_valid & !(pid_TOKEN | pid_DATA)) )	// ERROR
 			   begin
-				seq_err = !rx_err;
+				//seq_err = !rx_err;
 				if(!rx_active)	next_state = IDLE;
 			   end
 		   end
@@ -322,7 +323,7 @@ always @(state or rx_valid or rx_active or rx_err or pid_ACK or pid_TOKEN
 			else
 			if(!rx_active | rx_err)	// ERROR
 			   begin
-				seq_err = !rx_err;
+			 //	seq_err = !rx_err;
 				if(!rx_active)	next_state = IDLE;
 			   end
 		   end

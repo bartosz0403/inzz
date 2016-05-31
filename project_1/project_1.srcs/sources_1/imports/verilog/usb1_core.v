@@ -1,75 +1,4 @@
-/**********************************************************************
-*  Ported to USB2UART Project
-*  Author:  Dinesh Annayya
-*           Email:- dinesha@opencores.org
-*
-*     Date: 4th Feb 2013
-*     Changes:
-*     A. Warning Clean Up
-*     B. USB1-phy is move to core level
-*
-**********************************************************************/
-/////////////////////////////////////////////////////////////////////
-////                                                             ////
-////  USB 1.1 function IP core                                   ////
-////                                                             ////
-////                                                             ////
-////  Author: Rudolf Usselmann                                   ////
-////          rudi@asics.ws                                      ////
-////                                                             ////
-////                                                             ////
-////  Downloaded from: http://www.opencores.org/cores/usb1_funct/////
-////                                                             ////
-/////////////////////////////////////////////////////////////////////
-////                                                             ////
-//// Copyright (C) 2000-2002 Rudolf Usselmann                    ////
-////                         www.asics.ws                        ////
-////                         rudi@asics.ws                       ////
-////                                                             ////
-//// This source file may be used and distributed without        ////
-//// restriction provided that this copyright statement is not   ////
-//// removed from the file and that any derivative work contains ////
-//// the original copyright notice and the associated disclaimer.////
-////                                                             ////
-////     THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY     ////
-//// EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED   ////
-//// TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS   ////
-//// FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL THE AUTHOR      ////
-//// OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,         ////
-//// INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES    ////
-//// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE   ////
-//// GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR        ////
-//// BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF  ////
-//// LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT  ////
-//// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT  ////
-//// OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         ////
-//// POSSIBILITY OF SUCH DAMAGE.                                 ////
-////                                                             ////
-/////////////////////////////////////////////////////////////////////
 
-//  CVS Log
-//
-//  $Id: usb1_core.v,v 1.2 2002-10-11 05:48:20 rudi Exp $
-//
-//  $Date: 2002-10-11 05:48:20 $
-//  $Revision: 1.2 $
-//  $Author: rudi $
-//  $Locker:  $
-//  $State: Exp $
-//
-// Change History:
-//               $Log: not supported by cvs2svn $
-//               Revision 1.1  2002/09/25 06:06:49  rudi
-//               - Added New Top Level
-//               - Remove old top level and associated files
-//               - Moved FIFOs to "Generic FIFOs" project
-//
-//
-//
-//
-//
-//
-//
 
 `include "usb1_defines.v"
 
@@ -150,9 +79,6 @@ module usb1_core(clk_i, rst_i,
 		// USB Misc
 		phy_tx_mode, usb_rst, 
 
-		// Interrupts
-		dropped_frame, misaligned_frame,
-		crc16_err,
 
 		// Vendor Features
 		v_set_int, v_set_feature, wValue,
@@ -223,8 +149,7 @@ input	[1:0]	LineState;
 
 input		phy_tx_mode;
 input		usb_rst;
-output		dropped_frame, misaligned_frame;
-output		crc16_err;
+
 
 output		v_set_int;
 output		v_set_feature;
@@ -348,8 +273,7 @@ wire		ctrl_setup, ctrl_in, ctrl_out;
 wire		send_stall;
 wire		token_valid;
 reg		rst_local;		// internal reset
-wire		dropped_frame;
-wire		misaligned_frame;
+
 wire		v_set_int;
 wire		v_set_feature;
 wire	[15:0]	wValue;
@@ -471,11 +395,9 @@ usb1_pl  u1(	.clk(			clk_i			),
 		.ep_sel(		ep_sel			),
 		.x_busy(		usb_busy		),
 		.int_crc16_set(		crc16_err		),
-		.dropped_frame(		dropped_frame		),
-		.misaligned_frame(	misaligned_frame	),
 
-		.ep_bf_en(		ep_bf_en		),
-		.ep_bf_size(		ep_bf_size		),
+//		.ep_bf_en(		ep_bf_en		),
+	//	.ep_bf_size(		ep_bf_size		),
 		.csr(			cfg			),
 		.tx_data_st(		tx_data_st		),
 
@@ -499,11 +421,7 @@ usb1_ctrl  u4(	.clk(			clk_i			),
 		.ctrl_setup(		ctrl_setup		),
 		.ctrl_in(		ctrl_in			),
 		.ctrl_out(		ctrl_out		),
-/*
-		.rx_ctrl_data          (rx_ctrl_data            ),
-		.rx_ctrl_dvalid        (rx_ctrl_dvalid          ),
-		.rx_ctrl_ddone         (rx_ctrl_ddone           ),
-*/
+
 
 		.ep0_din(		ep0_ctrl_dout		),
 		.ep0_dout(		ep0_ctrl_din		),
@@ -653,7 +571,7 @@ always @(ep_sel or ep0_full or ep1_full or ep2_full or ep3_full or
 	   4'h6:	ep_full = ep6_full;
 	   4'h7:	ep_full = ep7_full;
 	endcase
-
+/*
 always @(posedge clk_i)
 	case(ep_sel)	// synopsys full_case parallel_case
 	   4'h0:	ep_bf_en = 1'b0;
@@ -676,7 +594,7 @@ always @(posedge clk_i)
 	   4'h6:	ep_bf_size = ep6_bf_size;
 	   4'h7:	ep_bf_size = ep7_bf_size;
 	endcase
-
+*/
 assign ep1_dout = rx_ctrl_data_d;
 assign ep2_dout = rx_ctrl_data_d;
 assign ep3_dout = rx_ctrl_data_d;
