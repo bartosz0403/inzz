@@ -868,7 +868,7 @@ if (in_out_buf_ptr > 0) begin
                 -> SE0Event;
             end
             else begin
-                enc_data_in = in_out_buf[i];
+                enc_data_in = in_out_buf[i];  /// ///enc_data_in to jest wyjscie nastepnie mapowane do encodera 
                 if (i == in_out_buf_ptr - 1) enc_last_byte = 1'b1;
                 else enc_last_byte = 1'b0;
                 //if (Debug) $display("in_out_buf[%h] = %h at time %0t",i, in_out_buf[i], $time);

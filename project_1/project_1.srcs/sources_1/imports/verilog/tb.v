@@ -1,45 +1,3 @@
-//////////////////////////////////////////////////////////////////////
-////                                                              ////
-////                                                              ////
-////  This file is part of the USB2UART  project                  ////
-////  http://www.opencores.org/cores/usb2uart/                    ////
-////                                                              ////
-////  Description                                                 ////
-////                                                              ////
-////  To Do:                                                      ////
-////    nothing                                                   ////
-////                                                              ////
-//   Version  :0.1 -                                              ////
-////  Author(s):                                                  ////
-////      - Dinesh Annayya, dinesha@opencores.org                 ////
-////                                                              ////
-//////////////////////////////////////////////////////////////////////
-////                                                              ////
-//// Copyright (C) 2000 Authors and OPENCORES.ORG                 ////
-////                                                              ////
-//// This source file may be used and distributed without         ////
-//// restriction provided that this copyright statement is not    ////
-//// removed from the file and that any derivative work contains  ////
-//// the original copyright notice and the associated disclaimer. ////
-////                                                              ////
-//// This source file is free software; you can redistribute it   ////
-//// and/or modify it under the terms of the GNU Lesser General   ////
-//// Public License as published by the Free Software Foundation; ////
-//// either version 2.1 of the License, or (at your option) any   ////
-//// later version.                                               ////
-////                                                              ////
-//// This source is distributed in the hope that it will be       ////
-//// useful, but WITHOUT ANY WARRANTY; without even the implied   ////
-//// warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR      ////
-//// PURPOSE.  See the GNU Lesser General Public License for more ////
-//// details.                                                     ////
-////                                                              ////
-//// You should have received a copy of the GNU Lesser General    ////
-//// Public License along with this source; if not, download it   ////
-//// from http://www.opencores.org/lgpl.shtml                     ////
-////                                                              ////
-//////////////////////////////////////////////////////////////////////
-
 
 `timescale 1ns/10ps
 
@@ -52,22 +10,37 @@ module tb;
 `include "usb_test5.v"
 wire  usb_txoe,usb_txdp,usb_txdn;
 
-wire dpls = (usb_txoe == 1'b0) ? usb_txdp : 1'bz;// przypisanie core do agenta d+
-wire dmns = (usb_txoe == 1'b0) ? usb_txdn : 1'bz;// przypisanie core do agenta d-
-
+reg [31:0]  SetupDataLen;
+reg [15:0]  Crc16ErrMask; 
        	
 wire    [7:0]   DataOut;
-wire        TxValid;
-wire     TxReady;
-wire     [7:0]   DataIn;
-wire         RxValid;
-wire        RxActive;
-wire        RxError;
+wire      TxValid;
+reg     TxReady;
+reg     [7:0]   DataIn;
+reg         RxValid;
+reg        RxActive;
+reg        RxError;
 wire     [1:0]   LineState;
 
+reg [7:0]   rx_buffer            [0 : 10];
+reg [7:0]   rx_buffer_tmp            [0 : 10];
+        ;
+parameter M16 = 16'h8005; //mask value to calculate 16 bit crc
+parameter M05 = 8'h05;    //mask value to calculate 5 bit crc
 
 
+reg [11:0]  buf_pointer;
 
+parameter OUT_TOKEN           = 4'b0001,
+          IN_TOKEN            = 4'b1001,
+          SOF_TOKEN           = 4'b0101,
+          SETUP_TOKEN         = 4'b1101,
+          DATA0               = 4'b0011,
+          DATA1               = 4'b1011,
+          ACK                 = 4'b0010,
+          NAK                 = 4'b1010,
+          STALL               = 4'b1110,
+          PREAMBLE            = 4'b1100;
 
 
 
@@ -81,7 +54,7 @@ wire        usb_rst;
 reg   [7:0]   ep1_din_d;
 
 
-
+integer tmpCounter;
 
 
 //AMBA signals
@@ -93,25 +66,16 @@ wire [`USB_APB_DATA_REGISTER_WIDTH - 1 : 0] PWDATA;
 wire PREADY;
 wire [`USB_APB_DATA_REGISTER_WIDTH - 1 : 0] PRDATA;
 
-pullup(dpls); // Full Speed Device Indication
-//pulldown(dmns);
-
 parameter  SYS_BP_PER = 2.5;       
 parameter  USB_BP_PER = 10.4167;       
 reg sys_clk,resetn;
 reg usb_48mhz_clk;
 wire  [3:0]   ep_sel;
-//--------------------------------
-// Register Interface
-// ----------------------------------
-//wire [31:0]   reg_addr;   // Register Address
-//wire	      reg_rdwrn;  // 0 -> write, 1-> read
-/*
-wire	      reg_req;    //  Register Req
-wire [31:0]   reg_wdata;  // Register write data
-reg   [31:0]  reg_rdata;  // Register Read Data
-reg 	      reg_ack;    // Register Ack
-*/
+
+
+
+    
+
 always begin
      #SYS_BP_PER     sys_clk <= 1'b0;
      #SYS_BP_PER     sys_clk <= 1'b1;
@@ -119,8 +83,23 @@ end
 
 always begin
      #USB_BP_PER     usb_48mhz_clk <= 1'b0;
-     #USB_BP_PER     usb_48mhz_clk <= 1'b1;
+     #USB_BP_PER   usb_48mhz_clk <= 1'b1;
 end
+
+	
+	
+
+
+task sendRxActive ;
+input [31:0] i;
+begin
+#500;
+RxActive <= 1'b1;
+ #(i*65*USB_BP_PER)	  RxActive <= 1'b0;
+ 
+end
+endtask
+
 /*
 always begin
 #500000
@@ -137,23 +116,21 @@ PWRITE <= 1'b1;
 end
 
 */
+task delay;
+input [16:0] i;
+begin
 
-
-wire usb_rxd = ((dpls == 1) && (dmns == 0)) ? 1'b1:
-	       ((dpls == 0) && (dmns == 1)) ? 1'b0: 1'b0;
+ #(i*2*USB_BP_PER);
+ 
+end
+endtask
 
 core dut(
 	.clk_i      (usb_48mhz_clk), 
 	.rst_i      (resetn),
 
 		// USB PHY Interface
-	.usb_txdp   (usb_txdp), 
-	.usb_txdn   (usb_txdn), 
-	.usb_txoe   (usb_txoe),
-	.usb_rxd    (usb_rxd), // odbiornik
-	.usb_rxdp   (dpls), 
-	.usb_rxdn   (dmns),
-
+	
 	// USB Misc
 	.phy_tx_mode(1'b1), 
         .usb_rst(),
@@ -324,90 +301,318 @@ apb_agent u_apb_agent(
 .PCLK(usb_48mhz_clk)
      );
 test_control test_control();
-/*
-always @(posedge usb_48mhz_clk)
-	reg_ack <= reg_req;
 
-always @(posedge usb_48mhz_clk)
-	if(reg_req)
-	    reg_rdata <= reg_wdata;
-*/
 
 
 initial
 begin
+    Crc16ErrMask   = 16'hffff;
+    
+SetupDataLen = 8;
+#100 
 	resetn = 1;
 	#100 resetn = 0;
 	#100 resetn = 1;
-	#1000
+	RxError <= 1'b0;
+	TxReady <= 1'b0;
+	#3000
+	
+
+	SendToken(SETUP_TOKEN,7'h00, 4'h0);
+	delay(100);
+	SendAddress(7'h01);
+	
+	#500;
+	   TxReady <= 1'b1;
+  	#500;
+   TxReady <= 1'b0;
+#10000
 //	usb_test1;
 //	usb_test2;
-usb_test3;
+//usb_test3;
 
 //usb_test4;
 
 //usb_test5;
+//usb_test6;
 	$finish;
 end
 
+/*z
+		 #(600*USB_BP_PER)  DataIn <= 8'b00101101;
+		 #(64*USB_BP_PER)   DataIn <= 8'b00000000;
+		 #(64*USB_BP_PER)   DataIn <= 8'b00010000;
+		 
+		 #(180*USB_BP_PER)  DataIn <= 8'b11000011;
+		 #(64*USB_BP_PER)   DataIn <= 8'b00000000;
+		 #(64*USB_BP_PER)   DataIn <= 8'b00000101;
+		 #(64*USB_BP_PER)   DataIn <= 8'b00000001;
+		 #(64*USB_BP_PER)   DataIn <= 8'b00000000;
+		 #(64*USB_BP_PER)   DataIn <= 8'b00000000;
+		 #(64*USB_BP_PER)   DataIn <= 8'b00000000;
+		 #(64*USB_BP_PER)   DataIn <= 8'b00000000;
+		 #(64*USB_BP_PER)   DataIn <= 8'b00000000;
+		 #(64*USB_BP_PER)   DataIn <= 8'b11101011;
+		 #(64*USB_BP_PER)   DataIn <= 8'b00100101;
 
-task usb_test4;
+*/
 
-reg [6:0] address;
-reg [3:0] endpt;
-reg [3:0] Status;
- reg [31:0] ByteCount;
+task SetRxValid;
 
-  integer    i,j;
-  reg [7:0]  startbyte;
-  reg [15:0] mask;
-  integer    MaxPktSize;
-  reg [3:0]  PackType;
-
-
-parameter  MYACK   = 4'b0000,
-           MYNAK   = 4'b0001,
-           MYSTALL = 4'b0010,
-           MYTOUT  = 4'b0011,
-           MYIVRES = 4'b0100,
-           MYCRCER = 4'b0101;
-
-     begin
-     address = 7'b111_1111;
-     endpt   = 4'b0001;
-  //  `usbbfm.modify_device_speed(1'b0);// 0 LOW SPEED
-
-
-  
-     $display("%0d: USB Reset  -----", $time);
-    `usbbfm.usb_reset(48);
-
-    $display("%0d: Set Address = 1 -----", $time);
-    `usbbfm.SetAddress (address);
-    `usbbfm.setup(7'h00, 4'h0, Status);
-    `usbbfm.printstatus(Status, MYACK);
-    `usbbfm.status_IN(7'h00, 4'b0000, Status);
-    `usbbfm.printstatus(Status, MYACK);
-    
-    
-    
-    
-    
-  #500000
-  `usbbfm.in_token(address,endpt);  
-    #500;
-     tb.u_apb_agent.write_char (8'b00110000);
-    
-     #5000;
-     tb.u_apb_agent.write_char (8'b00111100);
-//`usbbfm.send_cos;
-    #600000;
-
-// `usbbfm.send_ack;
-    tb.test_control.finish_test;
-  
-  end
-
+begin
+		RxValid <= 1'b1;
+		#(2*USB_BP_PER)  RxValid <= 1'b0;
+end
 endtask
+
+task sendRxValid ;
+input [31:0] i;
+integer counter;
+begin
+#30;
+   for(counter = 0; counter < i ; counter = counter + 1) begin
+  #(64*USB_BP_PER)   SetRxValid;
+    end
+  
+end
+endtask
+
+
+
+task sendBuffor ;
+input [31:0] i;
+begin
+
+
+   for(tmpCounter = 0; tmpCounter < i ; tmpCounter = tmpCounter + 1) begin
+   #(64*USB_BP_PER)  DataIn <= rx_buffer[tmpCounter];
+    end
+
+end
+endtask
+
+
+
+/*
+
+for (i = 1; i <= SetupDataLen; i = i + 1) begin 
+    in_out_buf[i] = XmitBuffer[i - 1];
+    tmpCrc = crc16(in_out_buf[i], tmpCrc);
+end
+//if (Debug) $display("In %0s raw crc is %h at time %0t", SelfName, tmpCrc, $time);
+tmpCrc = ~{swap8(tmpCrc[15:8]), swap8(tmpCrc[7:0]};
+
+*/
+
+
+
+
+
+
+
+task SendData;
+input  [3:0]    token;
+input [31:0] numbytes;
+   
+   integer      i;
+   reg   [15:0] tmpcrc;
+  
+begin
+
+
+
+   rx_buffer[0] = {~token, token};
+
+
+
+   tmpcrc = 16'hffff;;
+for (i = 1; i <= SetupDataLen; i = i + 1) begin 
+        rx_buffer[i] = rx_buffer_tmp[i-1];
+    tmpcrc = crc16(rx_buffer[i], tmpcrc);
+end
+   if(numbytes > 0) begin
+      rx_buffer[numbytes+1] = ~swap8(tmpcrc[15:8]);
+      rx_buffer[numbytes+2] = ~swap8(tmpcrc[7:0]);
+   end
+   else begin
+      rx_buffer[numbytes+1] = 8'b0000_0000;
+      rx_buffer[numbytes+2] = 8'b0000_0000;
+   end
+fork
+begin
+sendRxValid(numbytes+3);
+  TxReady <= 1'b1;
+end
+sendBuffor(numbytes+3);
+sendRxActive(numbytes+3);
+
+
+join
+
+end
+endtask
+
+
+
+
+
+
+
+
+
+
+
+task SendAddress;
+  input [6:0] address;
+begin
+    rx_buffer_tmp[0] = 8'b0000_0000;
+    rx_buffer_tmp[1] = 8'b0000_0101; // SetAddress rozkaz SET_ADDRESS 05h
+    rx_buffer_tmp[2] = {1'b0, address};
+    rx_buffer_tmp[3] = 8'b0000_0000;
+    rx_buffer_tmp[4] = 8'b0000_0000;
+    rx_buffer_tmp[5] = 8'b0000_0000;
+    rx_buffer_tmp[6] = 8'b0000_0000;
+    rx_buffer_tmp[7] = 8'b0000_0000;
+    
+    SendData(DATA0,8);
+end
+endtask
+
+
+function [7:0] swap8;
+input    [7:0] SwapByte;
+begin
+swap8 = {SwapByte[0], SwapByte[1], SwapByte[2], SwapByte[3], SwapByte[4], SwapByte[5], SwapByte[6], SwapByte[7]};
+end
+endfunction
+
+
+
+function [15:0] crc16;
+input    [7:0]  DataByte;
+input    [15:0] PrevCrc;
+
+reg      [15:0] TempPrevCrc;
+integer         i;
+
+begin
+    TempPrevCrc = PrevCrc;
+    for (i = 0; i < 8; i = i + 1)
+    begin
+        if (DataByte[i] ^ TempPrevCrc[15] )
+            TempPrevCrc = {TempPrevCrc[14:0],1'b0} ^ M16;
+        else
+            TempPrevCrc = {TempPrevCrc[14:0], 1'b0};
+    end
+    crc16 = TempPrevCrc;
+end
+      
+endfunction
+/*
+function [16:0] FillCrc16;
+
+input    [31:0] StartAddr;
+input    [31:0] StopAddr;
+
+reg      [16:0] tmpCrc;
+integer         i;
+
+begin
+tmpCrc = 16'hffff;
+for (i = StartAddr; i <= StopAddr; i = i + 1) begin
+    tmpCrc = crc16( rx_buffer[i], tmpCrc);
+end
+FillCrc16 = tmpCrc;
+end
+endfunction
+*/
+
+function [15:0] FillCrc5;
+input  [10:0] InVal;
+reg    [15:0] tmpReg;
+begin
+tmpReg[10:0] =  InVal;     // put address and EndPt into consecutive bits
+tmpReg[15:11] = crc5(InVal, 5'b11111); // calculate crc5 for the first 8 bits
+
+tmpReg[15:11] ={tmpReg[11], tmpReg[12], tmpReg[13], tmpReg[14], tmpReg[15]};
+tmpReg[6:0] = InVal[6:0];   // address
+tmpReg[10:7] = InVal[10:7]; // End Point
+tmpReg[15:11] = ~tmpReg[15:11];
+                                               // invert the bits in the crc
+//tmpReg[15:11] = CorruptCrc5(tmpReg[15:11]); // crc5 corruption
+FillCrc5 = tmpReg;
+end
+endfunction
+
+
+
+
+
+
+function [4:0] crc5;
+input    [10:0] DataByte;
+input    [4:0] PrevCrc;
+
+reg      [4:0] TempPrevCrc;
+integer        i;
+begin
+    TempPrevCrc = PrevCrc;
+    for (i = 0; i < 11; i = i + 1)
+    begin
+        if (DataByte[i] ^ TempPrevCrc[4] )
+            TempPrevCrc = {TempPrevCrc[3:0],1'b0} ^ M05;
+        else
+            TempPrevCrc = {TempPrevCrc[3:0], 1'b0};
+    end
+    crc5 = TempPrevCrc[4:0];
+end
+endfunction
+
+task SendToken;
+input  [3:0]    token;
+input     [6:0]    address;
+input     [3:0]    EndPt;
+reg       [15:0]   tmpReg;
+begin
+
+    rx_buffer[0]  = {~token, token};
+    tmpReg[15:0]   = FillCrc5({EndPt, address});
+    rx_buffer[1]  = tmpReg[7:0];
+   rx_buffer[2]  = tmpReg[15:8];
+ 
+fork
+sendRxValid(3);
+sendBuffor(3);
+sendRxActive(3);
+join
+
+
+
+
+end
+endtask
+
+
+task SendHandshake;
+input  [3:0]    token;
+
+begin
+
+    rx_buffer[0]  = {~token, token};
+
+fork
+sendRxValid(1);
+sendBuffor(1);
+sendRxActive(1);
+join
+
+
+
+
+end
+endtask
+
+
+
 
 endmodule

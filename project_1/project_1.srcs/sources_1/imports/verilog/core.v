@@ -51,16 +51,10 @@ module core(
         clk_i, 
         rst_i,
 
-        // Transciever Interface
-        usb_txdp, 
-        usb_txdn, 
-        usb_txoe,   
-        usb_rxd, 
-        usb_rxdp, 
-        usb_rxdn,
+      
 
         // USB Misc
-        phy_tx_mode ,
+        phy_tx_mode , // 1
         usb_rst,
 
         // Interrupts
@@ -189,13 +183,6 @@ output wire [`USB_APB_DATA_REGISTER_WIDTH - 1 : 0] PRDATA;
 input       clk_i;
 input       rst_i;
 
-// USB Traceiver interface
-output      usb_txdp; // USB TX + 
-output      usb_txdn; // USB TX -
-output      usb_txoe; // USB TX OEN, Output driven at txoe=0
-input       usb_rxd; 
-input       usb_rxdp;  // USB RX+
-input       usb_rxdn;  // USB RX-
 
 input       phy_tx_mode;
 output      usb_rst;
@@ -335,31 +322,6 @@ wire        rst;
 wire        phy_tx_mode;
 wire        usb_rst;
 reg   [7:0]   ep1_din_d;
-usb_phy u_usb_phy(
-                    .clk                ( clk_i             ),
-                    .rst                ( rst_i             ),  
-                    .phy_tx_mode        ( phy_tx_mode       ),
-                    .usb_rst            ( usb_rst           ),
-
-        // Transceiver Interface
-                    .rxd                ( usb_rxd           ),
-                    .rxdp               ( usb_rxdp          ),
-                    .rxdn               ( usb_rxdn          ),
-                    .txdp               ( usb_txdp          ),
-                    .txdn               ( usb_txdn          ),
-                    .txoe               ( usb_txoe          ),
-
-        // UTMI Interface
-                    .DataIn_o           ( DataIn            ),
-                    .RxValid_o          ( RxValid           ),
-                    .RxActive_o         ( RxActive          ),
-                    .RxError_o          ( RxError           ),
-                    .DataOut_i          ( DataOut           ),
-                    .TxValid_i          ( TxValid           ),
-                    .TxReady_o          ( TxReady           ),
-                    .LineState_o        ( LineState         )
-        );
-
 
 
 

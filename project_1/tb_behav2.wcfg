@@ -11,11 +11,11 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="255000000001fs"></ZoomEndTime>
-      <Cursor1Time time="1436093640000fs"></Cursor1Time>
+      <ZoomStartTime time="6473646940fs"></ZoomStartTime>
+      <ZoomEndTime time="13183646941fs"></ZoomEndTime>
+      <Cursor1Time time="8500434000fs"></Cursor1Time>
    </zoom_setting>
-   <WVObjectSize size="16" />
+   <WVObjectSize size="17" />
    <wvobject db_ref_id="1" type="logic" fp_name="/tb/dut/u_usb_core/idma_re">
       <obj_property name="ElementShortName">idma_re</obj_property>
       <obj_property name="ObjectShortName">idma_re</obj_property>
@@ -79,5 +79,65 @@
    <wvobject db_ref_id="1" type="logic" fp_name="/tb/dut/u_usb_core/u1/u2/mwe">
       <obj_property name="ElementShortName">mwe</obj_property>
       <obj_property name="ObjectShortName">mwe</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/tb/rx_buffer">
+      <obj_property name="ElementShortName">rx_buffer[0:10][7:0]</obj_property>
+      <obj_property name="ObjectShortName">rx_buffer[0:10][7:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject db_ref_id="1" type="array" fp_name="/tb/rx_buffer[0]">
+         <obj_property name="ElementShortName">[0][7:0]</obj_property>
+         <obj_property name="ObjectShortName">rx_buffer[0][7:0]</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/tb/rx_buffer[1]">
+         <obj_property name="ElementShortName">[1][7:0]</obj_property>
+         <obj_property name="ObjectShortName">rx_buffer[1][7:0]</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/tb/rx_buffer[2]">
+         <obj_property name="ElementShortName">[2][7:0]</obj_property>
+         <obj_property name="ObjectShortName">rx_buffer[2][7:0]</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/tb/rx_buffer[3]">
+         <obj_property name="ElementShortName">[3][7:0]</obj_property>
+         <obj_property name="ObjectShortName">rx_buffer[3][7:0]</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/tb/rx_buffer[4]">
+         <obj_property name="ElementShortName">[4][7:0]</obj_property>
+         <obj_property name="ObjectShortName">rx_buffer[4][7:0]</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/tb/rx_buffer[5]">
+         <obj_property name="ElementShortName">[5][7:0]</obj_property>
+         <obj_property name="ObjectShortName">rx_buffer[5][7:0]</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/tb/rx_buffer[6]">
+         <obj_property name="ElementShortName">[6][7:0]</obj_property>
+         <obj_property name="ObjectShortName">rx_buffer[6][7:0]</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/tb/rx_buffer[7]">
+         <obj_property name="ElementShortName">[7][7:0]</obj_property>
+         <obj_property name="ObjectShortName">rx_buffer[7][7:0]</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/tb/rx_buffer[8]">
+         <obj_property name="ElementShortName">[8][7:0]</obj_property>
+         <obj_property name="ObjectShortName">rx_buffer[8][7:0]</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/tb/rx_buffer[9]">
+         <obj_property name="ElementShortName">[9][7:0]</obj_property>
+         <obj_property name="ObjectShortName">rx_buffer[9][7:0]</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
+      <wvobject db_ref_id="1" type="array" fp_name="/tb/rx_buffer[10]">
+         <obj_property name="ElementShortName">[10][7:0]</obj_property>
+         <obj_property name="ObjectShortName">rx_buffer[10][7:0]</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
    </wvobject>
 </wave_config>
