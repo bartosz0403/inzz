@@ -320,7 +320,7 @@ begin
 #30;
    for(counter = 0; counter < i ; counter = counter + 1) begin
  	    #(36*USB_BP_PER) TxReady <= 1'b1;
-		#(12*USB_BP_PER)  TxReady <= 1'b0;
+		#(2*USB_BP_PER)  TxReady <= 1'b0;
     end
   
 end

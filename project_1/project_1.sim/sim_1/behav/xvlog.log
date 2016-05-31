@@ -26,7 +26,7 @@ INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb
 INFO: [VRFC 10-311] analyzing module usb1_rom1
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_pl.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module usb1_pl
-INFO: [VRFC 10-2458] undeclared symbol int_upid_set, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_pl.v:410]
+INFO: [VRFC 10-2458] undeclared symbol int_upid_set, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_pl.v:354]
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_ctrl.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module usb1_ctrl
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/uart_txfsm.v" into library xil_defaultlib
