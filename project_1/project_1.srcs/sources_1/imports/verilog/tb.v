@@ -4,10 +4,7 @@
 `include "usb1_defines.v"
 module tb;
 
-`include "usb_test1.v"
-`include "usb_test2.v"
-`include "usb_test3.v"
-`include "usb_test5.v"
+
 wire  usb_txoe,usb_txdp,usb_txdn;
 
 reg [31:0]  SetupDataLen;
@@ -246,10 +243,7 @@ core dut(
 	.ep7_bf_en(		1'b0			),
 	.ep7_bf_size(		7'h0			),
 
-        // Uart Line Interface
-	.uart_txd     (uart_txd),
-	.uart_rxd    (uart_rxd),
-	
+
 
 	.PSEL(PSEL),
 	.PWRITE(PWRITE),
@@ -276,16 +270,8 @@ core dut(
 	); 		
 
 
-usb_agent u_usb_agent(
-        .dpls       (dpls),
-        .dmns       (dmns)
-       );
 
-uart_agent u_uart_agent(
-	.test_clk (usb_48mhz_clk),
-	.sin     (uart_rxd),
-	.sout    (uart_txd)
-     );
+
      
      
  
@@ -305,8 +291,7 @@ apb_agent u_apb_agent(
 	///_____________OUT SLAVE ASSIGN ___________//
 .PCLK(usb_48mhz_clk)
      );
-    
-test_control test_control();
+
 
 
 

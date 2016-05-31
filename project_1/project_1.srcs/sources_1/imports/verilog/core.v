@@ -135,7 +135,7 @@ module core(
         ep7_dout, ep7_re, ep7_empty,
         ep7_bf_en, ep7_bf_size,
         // Uart Line Interface
-        uart_txd, uart_rxd,
+   
 
 //AMBA
 
@@ -261,19 +261,21 @@ input   [6:0]   ep7_bf_size;
 //----------------------
 // Uart I/F
 //-----------------------
-
+/*
 input           uart_rxd;
 output          uart_txd;
 
 //-----------------------------------
 // Register Interface
 // ----------------------------------
+
 wire [31:0]   reg_addr;   // Register Address
 wire      reg_rdwrn;  // 0 -> write, 1-> read
 wire      reg_req;    //  Register Req
 wire [31:0]   reg_wdata;  // Register write data
 wire  [31:0]   reg_rdata;  // Register Read Data
 wire       reg_ack;    // Register Ack
+*/
 ///////////////////////////////////////////////////////////////////
 // Local Wires and Registers
 ///////////////////////////////////////////////////////////////////
@@ -430,7 +432,9 @@ usb1_core  u_usb_core(
                     .ep7_empty          ( ep7_empty         ),
                     .ep7_bf_en          ( ep7_bf_en         ), 
                     .ep7_bf_size        ( ep7_bf_size       ),
-
+                    
+                  
+                    
                 // Register Interface
                     .reg_addr           ( reg_addr          ),
                     .reg_rdwrn          ( reg_rdwrn         ),
@@ -441,7 +445,7 @@ usb1_core  u_usb_core(
 
 
         );      
-
+/*
 uart_core  u_uart_core
 
      (  
@@ -464,7 +468,7 @@ uart_core  u_uart_core
         .so          (uart_txd)
 
      );
-
+*/
 
 usb_apb u_usb_apb
 

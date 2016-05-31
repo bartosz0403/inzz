@@ -499,11 +499,11 @@ usb1_ctrl  u4(	.clk(			clk_i			),
 		.ctrl_setup(		ctrl_setup		),
 		.ctrl_in(		ctrl_in			),
 		.ctrl_out(		ctrl_out		),
-
+/*
 		.rx_ctrl_data          (rx_ctrl_data            ),
 		.rx_ctrl_dvalid        (rx_ctrl_dvalid          ),
 		.rx_ctrl_ddone         (rx_ctrl_ddone           ),
-
+*/
 
 		.ep0_din(		ep0_ctrl_dout		),
 		.ep0_dout(		ep0_ctrl_din		),
@@ -534,6 +534,8 @@ usb1_ctrl  u4(	.clk(			clk_i			),
 
 		);
 
+
+//deskryptor do ctrl
 
 usb1_rom1 rom1(	.clk(		clk_i		),
 		.adr(		rom_adr		),
