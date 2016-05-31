@@ -23,10 +23,10 @@ verilog xil_defaultlib  "../../../project_1.srcs/sources_1/imports/verilog/async
 verilog xil_defaultlib  "../../../project_1.srcs/sources_1/imports/verilog/usb_apb.v" --include "../../../project_1.srcs/sources_1/imports/verilog"
 verilog xil_defaultlib  "../../../project_1.srcs/sources_1/imports/verilog/usb1_core.v" --include "../../../project_1.srcs/sources_1/imports/verilog"
 verilog xil_defaultlib  "../../../project_1.srcs/sources_1/imports/verilog/uart_core.v" --include "../../../project_1.srcs/sources_1/imports/verilog"
+verilog xil_defaultlib  "../../../project_1.srcs/sources_1/imports/verilog/apb_agent.v" --include "../../../project_1.srcs/sources_1/imports/verilog"
 verilog xil_defaultlib  "../../../project_1.srcs/sources_1/imports/verilog/usb_agent.v" --include "../../../project_1.srcs/sources_1/imports/verilog"
 verilog xil_defaultlib  "../../../project_1.srcs/sources_1/imports/verilog/uart_agent.v" --include "../../../project_1.srcs/sources_1/imports/verilog"
 verilog xil_defaultlib  "../../../project_1.srcs/sources_1/imports/verilog/test_control.v" --include "../../../project_1.srcs/sources_1/imports/verilog"
-verilog xil_defaultlib  "../../../project_1.srcs/sources_1/imports/verilog/apb_agent.v" --include "../../../project_1.srcs/sources_1/imports/verilog"
 verilog xil_defaultlib  "../../../project_1.srcs/sources_1/imports/verilog/core.v" --include "../../../project_1.srcs/sources_1/imports/verilog"
 verilog xil_defaultlib  "../../../project_1.srcs/sources_1/imports/verilog/tb.v" --include "../../../project_1.srcs/sources_1/imports/verilog"
 

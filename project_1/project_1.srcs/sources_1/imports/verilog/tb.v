@@ -56,16 +56,23 @@ reg   [7:0]   ep1_din_d;
 
 integer tmpCounter;
 
-
-//AMBA signals
 wire PSEL;
 wire PENABLE;
-wire [`USB_APB_ADDRESS_WIDTH-1:0] PADDR;
+wire[`USB_APB_ADDRESS_WIDTH-1:0] PADDR;
 wire PWRITE;
 wire [`USB_APB_DATA_REGISTER_WIDTH - 1 : 0] PWDATA;
 wire PREADY;
 wire [`USB_APB_DATA_REGISTER_WIDTH - 1 : 0] PRDATA;
-
+/*
+//AMBA signals
+reg PSEL;
+reg PENABLE;
+reg[`USB_APB_ADDRESS_WIDTH-1:0] PADDR;
+reg PWRITE;
+reg [`USB_APB_DATA_REGISTER_WIDTH - 1 : 0] PWDATA;
+wire PREADY;
+wire [`USB_APB_DATA_REGISTER_WIDTH - 1 : 0] PRDATA;
+*/
 parameter  SYS_BP_PER = 2.5;       
 parameter  USB_BP_PER = 10.4167;       
 reg sys_clk,resetn;
@@ -87,19 +94,17 @@ always begin
 end
 
 	
-	
-
 
 task sendRxActive ;
 input [31:0] i;
 begin
-#500;
+#250
 RxActive <= 1'b1;
  #(i*65*USB_BP_PER)	  RxActive <= 1'b0;
  
 end
-endtask
 
+endtask
 /*
 always begin
 #500000
@@ -114,8 +119,8 @@ PWRITE <= 1'b1;
 	PWDATA <=   8'b01010111;
 
 end
-
 */
+
 task delay;
 input [16:0] i;
 begin
@@ -283,7 +288,7 @@ uart_agent u_uart_agent(
      );
      
      
-     
+ 
  
 apb_agent u_apb_agent(
 
@@ -300,62 +305,28 @@ apb_agent u_apb_agent(
 	///_____________OUT SLAVE ASSIGN ___________//
 .PCLK(usb_48mhz_clk)
      );
+    
 test_control test_control();
 
 
 
-initial
+
+
+
+task SetTxReady;
+input [31:0] i;
+integer counter;
 begin
-    Crc16ErrMask   = 16'hffff;
-    
-SetupDataLen = 8;
-#100 
-	resetn = 1;
-	#100 resetn = 0;
-	#100 resetn = 1;
-	RxError <= 1'b0;
-	TxReady <= 1'b0;
-	#3000
-	
-
-	SendToken(SETUP_TOKEN,7'h00, 4'h0);
-	delay(100);
-	SendAddress(7'h01);
-	
-	#500;
-	   TxReady <= 1'b1;
-  	#500;
-   TxReady <= 1'b0;
-#10000
-//	usb_test1;
-//	usb_test2;
-//usb_test3;
-
-//usb_test4;
-
-//usb_test5;
-//usb_test6;
-	$finish;
+#30;
+   for(counter = 0; counter < i ; counter = counter + 1) begin
+ 	    #(36*USB_BP_PER) TxReady <= 1'b1;
+		#(12*USB_BP_PER)  TxReady <= 1'b0;
+    end
+  
 end
+endtask
 
-/*z
-		 #(600*USB_BP_PER)  DataIn <= 8'b00101101;
-		 #(64*USB_BP_PER)   DataIn <= 8'b00000000;
-		 #(64*USB_BP_PER)   DataIn <= 8'b00010000;
-		 
-		 #(180*USB_BP_PER)  DataIn <= 8'b11000011;
-		 #(64*USB_BP_PER)   DataIn <= 8'b00000000;
-		 #(64*USB_BP_PER)   DataIn <= 8'b00000101;
-		 #(64*USB_BP_PER)   DataIn <= 8'b00000001;
-		 #(64*USB_BP_PER)   DataIn <= 8'b00000000;
-		 #(64*USB_BP_PER)   DataIn <= 8'b00000000;
-		 #(64*USB_BP_PER)   DataIn <= 8'b00000000;
-		 #(64*USB_BP_PER)   DataIn <= 8'b00000000;
-		 #(64*USB_BP_PER)   DataIn <= 8'b00000000;
-		 #(64*USB_BP_PER)   DataIn <= 8'b11101011;
-		 #(64*USB_BP_PER)   DataIn <= 8'b00100101;
 
-*/
 
 task SetRxValid;
 
@@ -441,7 +412,8 @@ end
 fork
 begin
 sendRxValid(numbytes+3);
-  TxReady <= 1'b1;
+  delay(5);
+SetTxReady(1);
 end
 sendBuffor(numbytes+3);
 sendRxActive(numbytes+3);
@@ -452,13 +424,24 @@ join
 end
 endtask
 
+/*
+task SetConfiguration;
+  input [1:0] cfg_val;
+begin
+    XmitBuffer[0] = 8'b0000_0000;
+    XmitBuffer[1] = 8'b0000_1001; // Set Configuration 09h
+    XmitBuffer[2] = {6'b000_000, cfg_val};
+    XmitBuffer[3] = 8'b0000_0000;
+    XmitBuffer[4] = 8'b0000_0000;
+    XmitBuffer[5] = 8'b0000_0000;
+    XmitBuffer[6] = 8'b0000_0000;
+    XmitBuffer[7] = 8'b0000_0000;
+        SendData(DATA0,8);
+end
+endtask
 
 
-
-
-
-
-
+*/
 
 
 
@@ -612,7 +595,62 @@ join
 end
 endtask
 
+initial
+begin
+    Crc16ErrMask   = 16'hffff;
+    
+SetupDataLen = 8;
+#100 
+	resetn = 1;
+	#100 resetn = 0;
+	#100 resetn = 1;
+	RxError <= 1'b0;
+	TxReady <= 1'b0;
+	#3000
+	test_1;
+
+#40000
+//	usb_test1;
+//	usb_test2;
+//usb_test3;
+
+//usb_test4;
+
+//usb_test5;
+//usb_test6;
+	$finish;
+end
+
+task test_1;
 
 
+begin
+
+
+	SendToken(SETUP_TOKEN,7'h00, 4'h0);
+	delay(100);
+	SendAddress(7'b111_1111);
+	delay(100);
+	SendToken(IN_TOKEN,7'h00, 4'h0);
+	SetTxReady(3);
+   	delay(1000);
+
+   	
+   	SendToken(IN_TOKEN,7'b111_1111, 4'h1);
+fork
+  tb.u_apb_agent.write_char (8'b11000000);
+ 
+	SetTxReady(4);
+join	
+	fork
+  tb.u_apb_agent.write_char (8'b11000110);
+ 
+	SetTxReady(4);
+join	
+
+ 	delay(1000);
+
+end
+endtask
 
 endmodule

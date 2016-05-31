@@ -174,7 +174,7 @@ input wire [`USB_APB_ADDRESS_WIDTH-1:0] PADDR;
 input wire PWRITE;
 input wire [`USB_APB_DATA_REGISTER_WIDTH - 1 : 0] PWDATA;
 output wire PREADY;
-output wire [`USB_APB_DATA_REGISTER_WIDTH - 1 : 0] PRDATA;
+output reg [`USB_APB_DATA_REGISTER_WIDTH - 1 : 0] PRDATA;
 
         
         

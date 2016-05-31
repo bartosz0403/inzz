@@ -120,7 +120,7 @@ always @(posedge clk)
 		// ====================================
 	   7'h24:	dout <= #1 8'h07;	// this descriptor length
 	   7'h25:	dout <= #1 8'h05;	// descriptor type
-	   7'h26:	dout <= #1 8'h81;	// endpoint address
+	   7'h26:	dout <= #1 8'h01;	// endpoint address
 	   7'h27:	dout <= #1 8'h01;	// endpoint attributes
 	   7'h28:	dout <= #1 8'h00;	// max packet size low byte
 	   7'h29:	dout <= #1 8'h01;	// max packet size high byte
@@ -142,7 +142,7 @@ always @(posedge clk)
 		// ====================================
 	   7'h32:	dout <= #1 8'h07;	// this descriptor length
 	   7'h33:	dout <= #1 8'h05;	// descriptor type
-	   7'h34:	dout <= #1 8'h83;	// endpoint address
+	   7'h34:	dout <= #1 8'h03;	// endpoint address
 	   7'h35:	dout <= #1 8'h02;	// endpoint attributes
 	   7'h36:	dout <= #1 8'd64;	// max packet size low byte
 	   7'h37:	dout <= #1 8'd00;	// max packet size high byte
@@ -164,7 +164,7 @@ always @(posedge clk)
 		// ====================================
 	   7'h40:	dout <= #1 8'h07;	// this descriptor length
 	   7'h41:	dout <= #1 8'h05;	// descriptor type
-	   7'h42:	dout <= #1 8'h85;	// endpoint address
+	   7'h42:	dout <= #1 8'h05;	// endpoint address
 	   7'h43:	dout <= #1 8'h03;	// endpoint attributes
 	   7'h44:	dout <= #1 8'd64;	// max packet size low byte
 	   7'h45:	dout <= #1 8'd00;	// max packet size high byte
