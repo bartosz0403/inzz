@@ -69,7 +69,11 @@ all unused inputs and leave outputs unconnected.
 These two constant configure the Block Frame feature.
 
 */
-
+/////////////////////////////////////////////////////////////////////
+////                                                             
+////  USB CORE 
+////
+/////////////////////////////////////////////////////////////////////   
 
 module usb1_core(clk_i, rst_i,
 
@@ -77,13 +81,14 @@ module usb1_core(clk_i, rst_i,
 		DataOut, TxValid, TxReady, RxValid,
 		RxActive, RxError, DataIn, LineState,
 		// USB Misc
-		phy_tx_mode, usb_rst, 
+	
+		usb_rst, 
 
-
+/*
 		// Vendor Features
 		v_set_int, v_set_feature, wValue,
 		wIndex, vendor_data,
-
+*/
 		// USB Status
 		usb_busy, ep_sel,
 
@@ -124,13 +129,13 @@ module usb1_core(clk_i, rst_i,
 		ep7_bf_en, ep7_bf_size,
 
 		// Register Interface
-		reg_addr,
+	/*	reg_addr,
 		reg_rdwrn,
 		reg_req,
 		reg_wdata,
 		reg_rdata,
 		reg_ack
-
+*/
 		); 		
 
 input		clk_i;
@@ -147,29 +152,30 @@ input		RxActive;
 input		RxError;
 input	[1:0]	LineState;
 
-input		phy_tx_mode;
-input		usb_rst;
 
+input		usb_rst;
+/*
 
 output		v_set_int;
 output		v_set_feature;
 output	[15:0]	wValue;
 output	[15:0]	wIndex;
 input	[15:0]	vendor_data;
-
+*/
 output		usb_busy;
 output	[3:0]	ep_sel;
 
 //-----------------------------------
 // Register Interface
 // ----------------------------------
+/*
 output [31:0]   reg_addr;   // Register Address
 output		reg_rdwrn;  // 0 -> write, 1-> read
 output		reg_req;    //  Register Req
 output [31:0]   reg_wdata;  // Register write data
 input  [31:0]   reg_rdata;  // Register Read Data
 input		reg_ack;    // Register Ack
-
+*/
 // Endpoint Interfaces
 input	[13:0]	ep1_cfg;       
 input	[7:0]	ep1_din;
@@ -252,7 +258,7 @@ wire		pid_cs_err;	// PID CS error
 wire		crc5_err;	// CRC5 Error
 
 reg	[7:0]	tx_data_st;
-wire	[7:0]	rx_ctrl_data;
+//wire	[7:0]	rx_ctrl_data;
 wire	[7:0]	rx_ctrl_data_d;
 reg	[13:0]	cfg;
 reg		ep_empty;
@@ -271,7 +277,7 @@ wire	[3:0]	ep0_ctrl_stat;
 
 wire		ctrl_setup, ctrl_in, ctrl_out;
 wire		send_stall;
-wire		token_valid;
+
 reg		rst_local;		// internal reset
 
 wire		v_set_int;
@@ -295,38 +301,7 @@ assign ep0_cfg = `CTRL | ep0_size;
 always @(posedge clk_i)
 	rst_local <= #1 rst_i & ~usb_rst;
 
-///////////////////////////////////////////////////////////////////
-//
-// Module Instantiations
-//
-/******* Move to phy logic is move to core level
-usb_phy phy(
-		.clk(			clk_i			),
-		.rst(			rst_i			),	// ONLY external reset
-		.phy_tx_mode(		phy_tx_mode		),
-		.usb_rst(		usb_rst			),
-
-		// Transceiver Interface
-		.rxd(			rx_d			),
-		.rxdp(			rx_dp			),
-		.rxdn(			rx_dn			),
-		.txdp(			tx_dp			),
-		.txdn(			tx_dn			),
-		.txoe(			tx_oe			),
-
-		// UTMI Interface
-		.DataIn_o(		DataIn			),
-		.RxValid_o(		RxValid			),
-		.RxActive_o(		RxActive		),
-		.RxError_o(		RxError			),
-		.DataOut_i(		DataOut			),
-		.TxValid_i(		TxValid			),
-		.TxReady_o(		TxReady			),
-		.LineState_o(		LineState		)
-		);
-*******************************/
-// UTMI Interface
-usb1_utmi_if	u0(
+usb1_utmi_if	u_utmi(
 		.phy_clk(		clk_i			),
 		.rst(			rst_local		),
 		// Interface towards Phy-Tx
@@ -355,7 +330,7 @@ usb1_utmi_if	u0(
 		);
 
 // Protocol Layer
-usb1_pl  u1(	.clk(			clk_i			),
+usb1_pl  u_pl(	.clk(			clk_i			),
 		.rst(			rst_local		),
 		// Interface towards utmi-rx
 		.rx_data(		rx_data			),
@@ -373,18 +348,9 @@ usb1_pl  u1(	.clk(			clk_i			),
 		// Interface towards usb-phy-tx
 		.tx_valid_out(		TxValid			),
 
-		// unused outputs
-		.token_valid(		token_valid		),
-		.int_to_set(		int_to_set		),
-		.int_seqerr_set(	int_seqerr_set		),
-		.pid_cs_err(		pid_cs_err		),
-		.nse_err(		nse_err			),
-		.crc5_err(		crc5_err		),
-		.rx_size(		rx_size			),
-		.rx_done(		rx_done			),
 
 		// Interface towards usb-ctrl
-		.fa(			funct_adr		),
+		.function_addr(			funct_adr		),
 		.frm_nat(		frm_nat			),
 		.ctrl_setup(		ctrl_setup		),
 		.ctrl_in(		ctrl_in			),
@@ -396,15 +362,13 @@ usb1_pl  u1(	.clk(			clk_i			),
 		.x_busy(		usb_busy		),
 		.int_crc16_set(		crc16_err		),
 
-//		.ep_bf_en(		ep_bf_en		),
-	//	.ep_bf_size(		ep_bf_size		),
+
 		.csr(			cfg			),
 		.tx_data_st(		tx_data_st		),
 
-		.rx_ctrl_data          (rx_ctrl_data		),
+
 		.rx_ctrl_data_d        (rx_ctrl_data_d		),
-		.rx_ctrl_dvalid        (rx_ctrl_dvalid          ),
-		.rx_ctrl_ddone         (rx_ctrl_ddone           ),
+
 
 		.idma_re(		idma_re			),
 		.idma_we(		idma_we			),
@@ -412,7 +376,7 @@ usb1_pl  u1(	.clk(			clk_i			),
 		.ep_full(		ep_full			)
 		);
 
-usb1_ctrl  u4(	.clk(			clk_i			),
+usb1_ctrl  u_ctrl(	.clk(			clk_i			),
 		.rst(			rst_local		),
 
 		.rom_adr(		rom_adr			),
@@ -433,9 +397,9 @@ usb1_ctrl  u4(	.clk(			clk_i			),
 		.send_stall(		send_stall		),
 		.frame_no(		frm_nat[26:16]		),
 		.funct_adr(		funct_adr 		),
-		.configured(					),
-		.halt(						),
-
+		.configured(					), //flagi nie usuwam bo mogo sie przydac
+		.halt(						)
+/*
 		.v_set_int(		v_set_int		),
 		.v_set_feature(		v_set_feature		),
 		.wValue(		wValue			),
@@ -449,7 +413,7 @@ usb1_ctrl  u4(	.clk(			clk_i			),
 	           .reg_wdata   (reg_wdata),
 	           .reg_rdata   (reg_rdata),
 	           .reg_ack     (reg_ack)
-
+*/
 		);
 
 
@@ -460,28 +424,7 @@ usb1_rom1 rom1(	.clk(		clk_i		),
 		.dout(		rom_data	)
 		);
 
-// CTRL Endpoint FIFO
-/*************
-generic_fifo_sc_a #(8,6,0) u10(
-		.clk(			clk_i			),
-		.rst(			rst_i			),
-		.clr(			usb_rst			),
-		.din(			rx_ctrl_data_d		),
-		.we(			ep0_we			),
-		.dout(			ep0_ctrl_dout		),
-		.re(			ep0_ctrl_re		),
-		.full_r(					),
-		.empty_r(					),
-		.full(			ep0_full		),
-		.empty(			ep0_ctrl_stat[1]	),
-		.full_n(					),
-		.empty_n(					),
-		.full_n_r(					),
-		.empty_n_r(					),
-		.level(						)
-		);
 
-*************/
 // CTRL Endpoint FIFO
 sync_fifo  #(8,8) u10(
 	          .clk          (clk_i),
@@ -571,30 +514,7 @@ always @(ep_sel or ep0_full or ep1_full or ep2_full or ep3_full or
 	   4'h6:	ep_full = ep6_full;
 	   4'h7:	ep_full = ep7_full;
 	endcase
-/*
-always @(posedge clk_i)
-	case(ep_sel)	// synopsys full_case parallel_case
-	   4'h0:	ep_bf_en = 1'b0;
-	   4'h1:	ep_bf_en = ep1_bf_en;
-	   4'h2:	ep_bf_en = ep2_bf_en;
-	   4'h3:	ep_bf_en = ep3_bf_en;
-	   4'h4:	ep_bf_en = ep4_bf_en;
-	   4'h5:	ep_bf_en = ep5_bf_en;
-	   4'h6:	ep_bf_en = ep6_bf_en;
-	   4'h7:	ep_bf_en = ep7_bf_en;
-	endcase
 
-always @(posedge clk_i)
-	case(ep_sel)	// synopsys full_case parallel_case
-	   4'h1:	ep_bf_size = ep1_bf_size;
-	   4'h2:	ep_bf_size = ep2_bf_size;
-	   4'h3:	ep_bf_size = ep3_bf_size;
-	   4'h4:	ep_bf_size = ep4_bf_size;
-	   4'h5:	ep_bf_size = ep5_bf_size;
-	   4'h6:	ep_bf_size = ep6_bf_size;
-	   4'h7:	ep_bf_size = ep7_bf_size;
-	endcase
-*/
 assign ep1_dout = rx_ctrl_data_d;
 assign ep2_dout = rx_ctrl_data_d;
 assign ep3_dout = rx_ctrl_data_d;

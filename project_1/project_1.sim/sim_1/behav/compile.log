@@ -14,40 +14,39 @@ INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb
 INFO: [VRFC 10-311] analyzing module usb1_pa
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/generic_dpram.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module generic_dpram
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_ctrl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module usb1_ctrl
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_utmi_if.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module usb1_utmi_if
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_rom1.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module usb1_rom1
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_pl.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module usb1_pl
-INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_ctrl.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module usb1_ctrl
+INFO: [VRFC 10-2458] undeclared symbol pid_cs_err, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_pl.v:239]
+INFO: [VRFC 10-2458] undeclared symbol rx_size, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_pl.v:291]
+INFO: [VRFC 10-2458] undeclared symbol rx_done, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_pl.v:292]
+INFO: [VRFC 10-2458] undeclared symbol nse_err, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_pl.v:332]
+INFO: [VRFC 10-2458] undeclared symbol int_to_set, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_pl.v:335]
+INFO: [VRFC 10-2458] undeclared symbol int_seqerr_set, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_pl.v:336]
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/sync_fifo.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module sync_fifo
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/generic_fifo_sc_a.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module generic_fifo_sc_a
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb_apb.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module usb_apb
-WARNING: [VRFC 10-2379] empty port in module declaration [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb_apb.v:81]
+WARNING: [VRFC 10-2379] empty port in module declaration [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb_apb.v:45]
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_core.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module usb1_core
-INFO: [VRFC 10-2458] undeclared symbol rx_ctrl_dvalid, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_core.v:406]
-INFO: [VRFC 10-2458] undeclared symbol rx_ctrl_ddone, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_core.v:407]
-INFO: [VRFC 10-2458] undeclared symbol idma_re, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_core.v:409]
-INFO: [VRFC 10-2458] undeclared symbol idma_we, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_core.v:410]
-INFO: [VRFC 10-2458] undeclared symbol ep0_full, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_core.v:492]
-INFO: [VRFC 10-2458] undeclared symbol ep0_empty, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_core.v:508]
+INFO: [VRFC 10-2458] undeclared symbol idma_re, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_core.v:373]
+INFO: [VRFC 10-2458] undeclared symbol idma_we, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_core.v:374]
+INFO: [VRFC 10-2458] undeclared symbol ep0_full, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_core.v:435]
+INFO: [VRFC 10-2458] undeclared symbol ep0_empty, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_core.v:451]
+WARNING: [VRFC 10-2379] empty port in module declaration [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/usb1_core.v:139]
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/apb_agent.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module apb_agent
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/core.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module core
-INFO: [VRFC 10-2458] undeclared symbol reg_addr, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/core.v:435]
-INFO: [VRFC 10-2458] undeclared symbol reg_rdwrn, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/core.v:436]
-INFO: [VRFC 10-2458] undeclared symbol reg_req, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/core.v:437]
-INFO: [VRFC 10-2458] undeclared symbol reg_wdata, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/core.v:438]
-INFO: [VRFC 10-2458] undeclared symbol reg_rdata, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/core.v:439]
-INFO: [VRFC 10-2458] undeclared symbol reg_ack, assumed default net type wire [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/core.v:440]
-WARNING: [VRFC 10-2379] empty port in module declaration [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/core.v:164]
+WARNING: [VRFC 10-2379] empty port in module declaration [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/core.v:117]
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/tb.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module tb
 WARNING: [VRFC 10-2292] extra semicolon is not allowed here in this dialect. Use SystemVerilog mode [/home/mistrz/Desktop/test_bench_usb/project_1/project_1.srcs/sources_1/imports/verilog/tb.v:24]

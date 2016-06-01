@@ -1,47 +1,55 @@
 /////////////////////////////////////////////////////////////////////
-////                                                             ////
-////  Packet Disassembler                                        ////
-////  Disassembles Token and Data USB packets                    ////
-
+////                                                             
+////  USB Packet Disassembler  
+////
+/////////////////////////////////////////////////////////////////////   
 
 `include "usb1_defines.v"
 
 module usb1_pd(	clk, rst,
 
 		// UTMI RX I/F
-		rx_data, rx_valid, rx_active, rx_err,   // dane pobierane z utmi
+		rx_data,/////////////////// WEJSCIE DANYCH ///////////////
+		 rx_valid, rx_active, rx_err,   // dane pobierane z utmi
 
-		// PID Information
+		// PID flagi
 		pid_OUT, pid_IN, pid_SOF, pid_SETUP,
 		pid_DATA0, pid_DATA1, pid_DATA2, pid_MDATA,// flagi wyjsciowe sygnalizujace rodzaj nadeslanego pakietu
 		pid_ACK, pid_NACK, pid_STALL, pid_NYET,
 		pid_PRE, pid_ERR, pid_SPLIT, pid_PING,
 		pid_cks_err,
 
-		// Token Information
-		token_fadr, token_endp, token_valid, crc5_err,
-		frame_no,
+		// Token Info
+		token_fadr,  //function addres , uzadzenia
+		 token_endp,// numer endpoint
+		  token_valid,// czy token jest poprawny 
+		  crc5_err, //flaga CRC5 err
+		frame_no, // numer ramki 
+
+
+
 
 		// Receive Data Output
-		rx_data_st, rx_data_valid, rx_data_done, crc16_err, // dane wyjsciowe pozbawione znacznikow pakietow
+		rx_data_out,   /////////////////// WYJSCIE DANYCH ///////////////
+		rx_data_valid, // 
+		rx_data_done, // flaga sygnalizujaca wykonanie transmisi
+		 crc16_err, // dane wyjsciowe pozbawione znacznikow pakietow
 
-		// Misc.
-		//seq_err, 
 		rx_busy
 		);
 
 input		clk, rst;
 
-		//UTMI RX Interface
+		//UTMI RX 
 input	[7:0]	rx_data;
 input		rx_valid, rx_active, rx_err;
 
-		// Decoded PIDs (used when token_valid is asserted)
+		// Decoded PIDs jesli token_valid = 1
 output		pid_OUT, pid_IN, pid_SOF, pid_SETUP;
 output		pid_DATA0, pid_DATA1, pid_DATA2, pid_MDATA;
 output		pid_ACK, pid_NACK, pid_STALL, pid_NYET;
 output		pid_PRE, pid_ERR, pid_SPLIT, pid_PING;
-output		pid_cks_err;		// Indicates a PID checksum error
+output		pid_cks_err;		//   PID checksum error
 
 
 output	[6:0]	token_fadr;		// Function address from token
@@ -50,18 +58,19 @@ output		token_valid;		// Token is valid
 output		crc5_err;		// Token crc5 error
 output	[10:0]	frame_no;		// Frame number for SOF tokens
 
-output	[7:0]	rx_data_st;		// Data to memory store unit
+output	[7:0]	rx_data_out;		// Data to memory store unit
 output		rx_data_valid;		// Data on rx_data_st is valid
 output		rx_data_done;		// Indicates end of a transfer
 output		crc16_err;		// Data packet CRC 16 error
 
-//output		seq_err;		// State Machine Sequence Error
-output		rx_busy;		// Receivig Data Packet
 
-///////////////////////////////////////////////////////////////////
-//
-// Local Wires and Registers
-//
+output		rx_busy;		
+
+
+
+
+
+
 
 parameter	[3:0]	// synopsys enum state
 		IDLE   = 4'b0001,
@@ -77,21 +86,21 @@ reg		pid_le_sm;		// PID Load enable from State Machine
 wire		pid_ld_en;		// Enable loading of PID (all conditions)
 wire		pid_cks_err;		// Indicates a pid checksum err
 
-		// Decoded PID values
+		
 wire		pid_OUT, pid_IN, pid_SOF, pid_SETUP;
 wire		pid_DATA0, pid_DATA1, pid_DATA2, pid_MDATA;
 wire		pid_ACK, pid_NACK, pid_STALL, pid_NYET;
 wire		pid_PRE, pid_ERR, pid_SPLIT, pid_PING, pid_RES;
-wire		pid_TOKEN;		// All TOKEN packet that we recognize
-wire		pid_DATA;		// All DATA packets that we recognize
+wire		pid_TOKEN;		// All TOKEN
+wire		pid_DATA;		// All DATA 
 
-reg	[7:0]	token0, token1;		// Token Registers
-reg		token_le_1, token_le_2;	// Latch enables for token storage registers
+reg	[7:0]	token0, token1;		
+reg		token_le_1, token_le_2;	
 wire	[4:0]	token_crc5;
 
-reg	[7:0]	d0, d1, d2;		// Data path delay line (used to filter out crcs)
-reg		data_valid_d;		// Data Valid output from State Machine
-reg		data_done;		// Data cycle complete output from State Machine
+reg	[7:0]	d0, d1, d2;		
+reg		data_valid_d;		
+reg		data_done;		
 reg		data_valid0; 		// Data valid delay line
 reg		rxv1;
 reg		rxv2;
@@ -231,7 +240,7 @@ always @(posedge clk)
 	if(data_valid_d)	d2 <= #1 d1;
    end
 
-assign rx_data_st = d2;
+assign rx_data_out = d2;
 assign rx_data_valid = data_valid0;
 assign rx_data_done = data_done;
 

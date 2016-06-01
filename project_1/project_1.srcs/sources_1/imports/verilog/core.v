@@ -1,79 +1,32 @@
-//////////////////////////////////////////////////////////////////////
-////                                                              ////
-////  USB2UART core level  Module                                 ////
-////                                                              ////
-////  This file is part of the usb2uart cores project             ////
-////  http://www.opencores.org/cores/usb2uart/                    ////
-////                                                              ////
-////  Description                                                 ////
-////  USB2UART core level integration.                            ////
-////     Following modules are integrated                         ////
-////         1. usb1_phy                                          ////
-////         2. usb1_core                                         ////
-////         3. uart_core                                         ////
-////   Ver 0.1 : 01.Mar.2013                                      ////
-////                                                              ////
-////  To Do:                                                      ////
-////    nothing                                                   ////
-////                                                              ////
-////  Author(s):                                                  ////
-////      - Dinesh Annayya, dinesha@opencores.org                 ////
-////                                                              ////
-//////////////////////////////////////////////////////////////////////
-////                                                              ////
-//// Copyright (C) 2000 Authors and OPENCORES.ORG                 ////
-////                                                              ////
-//// This source file may be used and distributed without         ////
-//// restriction provided that this copyright statement is not    ////
-//// removed from the file and that any derivative work contains  ////
-//// the original copyright notice and the associated disclaimer. ////
-////                                                              ////
-//// This source file is free software; you can redistribute it   ////
-//// and/or modify it under the terms of the GNU Lesser General   ////
-//// Public License as published by the Free Software Foundation; ////
-//// either version 2.1 of the License, or (at your option) any   ////
-//// later version.                                               ////
-////                                                              ////
-//// This source is distributed in the hope that it will be       ////
-//// useful, but WITHOUT ANY WARRANTY; without even the implied   ////
-//// warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR      ////
-//// PURPOSE.  See the GNU Lesser General Public License for more ////
-//// details.                                                     ////
-////                                                              ////
-//// You should have received a copy of the GNU Lesser General    ////
-//// Public License along with this source; if not, download it   ////
-//// from http://www.opencores.org/lgpl.shtml                     ////
-////                                                              ////
-//////////////////////////////////////////////////////////////////////
 
 `include "usb1_defines.v"
+/////////////////////////////////////////////////////////////////////
+////                                                             
+////  USB DEVICE TOP
+////
+/////////////////////////////////////////////////////////////////////   
 module core(
         clk_i, 
         rst_i,
 
       
 
-        // USB Misc
-        phy_tx_mode , // 1
+
         usb_rst,
 
- /*       // Interrupts
-        dropped_frame, 
-        misaligned_frame,
-        crc16_err,
-*/
-        // Vendor Features
+
+   /*     // 
         v_set_int, 
         v_set_feature, 
         wValue,
         wIndex, 
         vendor_data,
-
-        // USB Status
+*/
+        // 
         usb_busy, 
         ep_sel,
 
-        // Endpoint Interface
+        // 
       ep1_cfg,
     //    ep1_din,  
         ep1_we, 
@@ -134,7 +87,7 @@ module core(
         ep7_din,  ep7_we, ep7_full,
         ep7_dout, ep7_re, ep7_empty,
         ep7_bf_en, ep7_bf_size,
-        // Uart Line Interface
+      
    
 
 //AMBA
@@ -184,18 +137,15 @@ input       clk_i;
 input       rst_i;
 
 
-input       phy_tx_mode;
+
 output      usb_rst;
 /*
-output          dropped_frame, misaligned_frame;
-output          crc16_err;
-*/
 output          v_set_int;
 output          v_set_feature;
 output  [15:0]  wValue;
 output  [15:0]  wIndex;
 input   [15:0]  vendor_data;
-
+*/
 output      usb_busy;
 output  [3:0]   ep_sel;
 
@@ -259,29 +209,6 @@ input   [6:0]   ep7_bf_size;
 //-AMBA APB
 //----------------------
 
-//----------------------
-// Uart I/F
-//-----------------------
-/*
-input           uart_rxd;
-output          uart_txd;
-
-//-----------------------------------
-// Register Interface
-// ----------------------------------
-
-wire [31:0]   reg_addr;   // Register Address
-wire      reg_rdwrn;  // 0 -> write, 1-> read
-wire      reg_req;    //  Register Req
-wire [31:0]   reg_wdata;  // Register write data
-wire  [31:0]   reg_rdata;  // Register Read Data
-wire       reg_ack;    // Register Ack
-*/
-///////////////////////////////////////////////////////////////////
-// Local Wires and Registers
-///////////////////////////////////////////////////////////////////
-
-
 wire   [13:0]  ep1_cfg;
 wire    [7:0]   ep1_din;
 wire   [7:0]   ep1_dout;
@@ -322,7 +249,7 @@ wire        RxError;
 wire    [1:0]   LineState;
 wire        clk;
 wire        rst;
-wire        phy_tx_mode;
+
 wire        usb_rst;
 reg   [7:0]   ep1_din_d;
 
@@ -333,11 +260,11 @@ usb1_core  u_usb_core(
                     .rst_i              ( rst_i             ),
 
 
-                 // USB Misc
-                    .phy_tx_mode        ( phy_tx_mode       ), 
+              
+                   
                     .usb_rst            ( usb_rst           ), 
 
-                                        // UTMI Interface
+                                        // UTMI 
                     .DataIn             ( DataIn            ),
                     .RxValid            ( RxValid           ),
                     .RxActive           ( RxActive          ),
@@ -347,18 +274,18 @@ usb1_core  u_usb_core(
                     .TxReady            ( TxReady           ),
                     .LineState          ( LineState         ),
 
-                  // Vendor Features
-                    .v_set_int          ( v_set_int         ), 
+                  // /*
+                   /* .v_set_int          ( v_set_int         ), 
                     .v_set_feature      ( v_set_feature     ), 
                     .wValue             ( wValue            ),
                     .wIndex             ( wIndex            ), 
                     .vendor_data        ( vendor_data       ),
 
-        // USB Status
+        // */
                     .usb_busy           ( usb_busy          ), 
                     .ep_sel             ( ep_sel            ),
 
-        // Endpoint Interface
+        // Endpoint
                     .ep1_cfg            ( ep1_cfg           ),
                     .ep1_din            ( ep1_din           ),  
                     .ep1_we             ( ep1_we            ), 
@@ -427,17 +354,7 @@ usb1_core  u_usb_core(
                     .ep7_re             ( ep7_re            ), 
                     .ep7_empty          ( ep7_empty         ),
                     .ep7_bf_en          ( ep7_bf_en         ), 
-                    .ep7_bf_size        ( ep7_bf_size       ),
-                    
-                  
-                    
-                // Register Interface
-                    .reg_addr           ( reg_addr          ),
-                    .reg_rdwrn          ( reg_rdwrn         ),
-                    .reg_req            ( reg_req           ),
-                    .reg_wdata          ( reg_wdata         ),
-                    .reg_rdata          ( reg_rdata         ),
-                    .reg_ack            ( reg_ack           )
+                    .ep7_bf_size        ( ep7_bf_size       )
 
 
         );      

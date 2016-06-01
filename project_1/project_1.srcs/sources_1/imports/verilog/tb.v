@@ -97,7 +97,7 @@ input [31:0] i;
 begin
 #250
 RxActive <= 1'b1;
- #(i*65*USB_BP_PER)	  RxActive <= 1'b0;
+ #(i*40*USB_BP_PER)	  RxActive <= 1'b0;
  
 end
 
@@ -116,20 +116,8 @@ core dut(
 	.clk_i      (usb_48mhz_clk), 
 	.rst_i      (resetn),
 
-		// USB PHY Interface
-	
-	// USB Misc
-	.phy_tx_mode(1'b1), 
+
         .usb_rst(),
-
-
-
-	// Vendor Features
-	.v_set_int(), 
-	.v_set_feature(), 
-	.wValue(),
-	.wIndex(), 
-	.vendor_data(),
 
 	// USB Status
 	.usb_busy(), 
@@ -309,7 +297,7 @@ integer counter;
 begin
 #30;
    for(counter = 0; counter < i ; counter = counter + 1) begin
-  #(64*USB_BP_PER)   SetRxValid;
+  #(38*USB_BP_PER)   SetRxValid;
     end
   
 end
@@ -323,7 +311,7 @@ begin
 
 
    for(tmpCounter = 0; tmpCounter < i ; tmpCounter = tmpCounter + 1) begin
-   #(64*USB_BP_PER)  DataIn <= rx_buffer[tmpCounter];
+   #(38*USB_BP_PER)  DataIn <= rx_buffer[tmpCounter];
     end
 
 end
@@ -427,24 +415,7 @@ begin
 end
       
 endfunction
-/*
-function [16:0] FillCrc16;
 
-input    [31:0] StartAddr;
-input    [31:0] StopAddr;
-
-reg      [16:0] tmpCrc;
-integer         i;
-
-begin
-tmpCrc = 16'hffff;
-for (i = StartAddr; i <= StopAddr; i = i + 1) begin
-    tmpCrc = crc16( rx_buffer[i], tmpCrc);
-end
-FillCrc16 = tmpCrc;
-end
-endfunction
-*/
 
 function [15:0] FillCrc5;
 input  [10:0] InVal;
@@ -457,8 +428,8 @@ tmpReg[15:11] ={tmpReg[11], tmpReg[12], tmpReg[13], tmpReg[14], tmpReg[15]};
 tmpReg[6:0] = InVal[6:0];   // address
 tmpReg[10:7] = InVal[10:7]; // End Point
 tmpReg[15:11] = ~tmpReg[15:11];
-                                               // invert the bits in the crc
-//tmpReg[15:11] = CorruptCrc5(tmpReg[15:11]); // crc5 corruption
+                                               
+
 FillCrc5 = tmpReg;
 end
 endfunction
@@ -539,7 +510,7 @@ SetupDataLen = 8;
 #100 
 	resetn = 1;
 	#100 resetn = 0;
-	#100 resetn = 1;
+	#200 resetn = 1;
 	RxError <= 1'b0;
 	TxReady <= 1'b0;
 	#3000

@@ -44,18 +44,18 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PSRCDIR/sources_1/imports/verilog/apb_config.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PSRCDIR/sources_1/imports/verilog/usb1_defines.v">
         <FileInfo SFType="VHeader">
           <Attr Name="ImportPath" Val="$PPRDIR/../verilog/usb1_defines.v"/>
           <Attr Name="ImportTime" Val="1364130676"/>
           <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/imports/verilog/apb_config.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
@@ -122,6 +122,15 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PSRCDIR/sources_1/imports/verilog/usb1_ctrl.v">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../verilog/usb1_ctrl.v"/>
+          <Attr Name="ImportTime" Val="1364130676"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PSRCDIR/sources_1/imports/verilog/usb1_utmi_if.v">
         <FileInfo>
           <Attr Name="ImportPath" Val="$PPRDIR/../verilog/usb1_utmi_if.v"/>
@@ -144,15 +153,6 @@
         <FileInfo>
           <Attr Name="ImportPath" Val="$PPRDIR/../verilog/usb1_pl.v"/>
           <Attr Name="ImportTime" Val="1463349747"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/imports/verilog/usb1_ctrl.v">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../verilog/usb1_ctrl.v"/>
-          <Attr Name="ImportTime" Val="1364130676"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -442,6 +442,16 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PPRDIR/pl.wcfg">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/pd.wcfg">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
         <Option Name="TopModule" Val="tb"/>
@@ -453,6 +463,8 @@
         <Option Name="XSimWcfgFile" Val="$PPRDIR/tb_behav3.wcfg"/>
         <Option Name="XSimWcfgFile" Val="$PPRDIR/tb_behav4.wcfg"/>
         <Option Name="XSimWcfgFile" Val="$PPRDIR/test.wcfg"/>
+        <Option Name="XSimWcfgFile" Val="$PPRDIR/pl.wcfg"/>
+        <Option Name="XSimWcfgFile" Val="$PPRDIR/pd.wcfg"/>
         <Option Name="xsim.simulate.runtime" Val="1ns"/>
       </Config>
     </FileSet>

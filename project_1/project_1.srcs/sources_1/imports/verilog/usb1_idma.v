@@ -1,61 +1,8 @@
 /////////////////////////////////////////////////////////////////////
-////                                                             ////
-////  Internal DMA Engine                                        ////
-////                                                             ////
-////                                                             ////
-////  Author: Rudolf Usselmann                                   ////
-////          rudi@asics.ws                                      ////
-////                                                             ////
-////                                                             ////
-////  Downloaded from: http://www.opencores.org/cores/usb1_funct/////
-////                                                             ////
-/////////////////////////////////////////////////////////////////////
-////                                                             ////
-//// Copyright (C) 2000-2002 Rudolf Usselmann                    ////
-////                         www.asics.ws                        ////
-////                         rudi@asics.ws                       ////
-////                                                             ////
-//// This source file may be used and distributed without        ////
-//// restriction provided that this copyright statement is not   ////
-//// removed from the file and that any derivative work contains ////
-//// the original copyright notice and the associated disclaimer.////
-////                                                             ////
-////     THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY     ////
-//// EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED   ////
-//// TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS   ////
-//// FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL THE AUTHOR      ////
-//// OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,         ////
-//// INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES    ////
-//// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE   ////
-//// GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR        ////
-//// BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF  ////
-//// LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT  ////
-//// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT  ////
-//// OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         ////
-//// POSSIBILITY OF SUCH DAMAGE.                                 ////
-////                                                             ////
-/////////////////////////////////////////////////////////////////////
-
-//  CVS Log
-//
-//  $Id: usb1_idma.v,v 1.2 2002-09-25 06:06:49 rudi Exp $
-//
-//  $Date: 2002-09-25 06:06:49 $
-//  $Revision: 1.2 $
-//  $Author: rudi $
-//  $Locker:  $
-//  $State: Exp $
-//
-// Change History:
-//               $Log: not supported by cvs2svn $
-//               Revision 1.1.1.1  2002/09/19 12:07:38  rudi
-//               Initial Checkin
-//
-//
-//
-//
-//
-//
+////                                                             
+////  USB Internal DMA 
+////
+/////////////////////////////////////////////////////////////////////   
 
 `include "usb1_defines.v"
 
@@ -75,16 +22,11 @@ module usb1_idma(	clk, rst,
 		tx_dma_en, rx_dma_en, idma_done,
 	
 
-		// Register File Manager Interface
+
 		size,
 		rx_cnt, rx_done,
 		tx_busy,
 
-		// Block Frames
-
-	//	dropped_frame, misaligned_frame,
-
-		// Memory Arb interface
 		mwe, mre, ep_empty, ep_empty_int, ep_full
 		);
 
@@ -113,10 +55,6 @@ output		rx_done;
 output		tx_busy;
 
 
-
-//output		dropped_frame;
-//output		misaligned_frame;
-
 // Memory Arb interface
 output		mwe;
 output		mre;
@@ -124,10 +62,6 @@ input		ep_empty;
 output		ep_empty_int;
 input		ep_full;
 
-///////////////////////////////////////////////////////////////////
-//
-// Local Wires and Registers
-//
 
 reg		tx_dma_en_r;
 reg	[8:0]	sizd_c;			// Internal size counter
@@ -171,27 +105,19 @@ wire		tx_valid_e;
 assign ep_empty_int = ep_empty;
 
 assign ep_full_int = ep_full;
-/*
-always @(posedge clk)
-	dropped_frame <= #1 1'b0;
 
-always @(posedge clk)
-	misaligned_frame <= #1 1'b0;
-*/
-///////////////////////////////////////////////////////////////////
-//
-// FIFO interface
-//
+
+
 
 always @(posedge clk)
 	mwe_r <= #1 rx_data_valid;
 
 assign mwe = mwe_r & !ep_full_int;
 
-///////////////////////////////////////////////////////////////////
-//
-// Misc Logic
-//
+
+
+
+
 
 always @(posedge clk)
 	rx_data_valid_r <= #1 rx_data_valid;

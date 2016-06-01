@@ -1,10 +1,8 @@
 /////////////////////////////////////////////////////////////////////
-////                                                             ////
-////  Packet Assembler                                           ////
-////  Assembles Token and Data USB packets                       ////
-////                                                             ////
-////  Author: Rudolf Usselmann                                   ////
-////          rudi@asics.ws                                      ////
+////                                                             
+////  USB Packet Assembler
+////
+/////////////////////////////////////////////////////////////////////   
 
 `include "usb1_defines.v"
 

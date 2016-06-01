@@ -1,10 +1,8 @@
 /////////////////////////////////////////////////////////////////////
-////                                                             ////
-////  Protocol Layer                                             ////
-////  This block is typically referred to as the SEI in USB      ////
-////  Specification. It encapsulates the Packet Assembler,       ////
-////  disassembler, protocol engine and internal DMA             ////
-
+////                                                             
+////  USB Protocol Layer
+////
+/////////////////////////////////////////////////////////////////////
 `include "usb1_defines.v"
 module usb1_pl(	clk, rst,
 
@@ -13,32 +11,29 @@ module usb1_pl(	clk, rst,
 		tx_data, tx_valid, tx_valid_last, tx_ready,
 		tx_first, tx_valid_out,
 
-		token_valid,
+
 
 		// Register File Interface
-		fa,
-		ep_sel, 
-		x_busy,
-		int_crc16_set, int_to_set, int_seqerr_set,
+		function_addr, //adress przypisany urzadzeniu 
+		ep_sel,  // endpoit dla ktorego  jest transakcja
+		x_busy, //flaga wskazujaca na zajetosc rx i tx
+		int_crc16_set, 
+
 
 		// Misc
-		frm_nat,
-		pid_cs_err, nse_err,
-		crc5_err,
-		rx_size, rx_done,
-		ctrl_setup, ctrl_in, ctrl_out,
+		frm_nat,  // symer ramki z pakietu SOF
 
-		// Block Frames
-		//ep_bf_en, ep_bf_size,
-		//dropped_frame, misaligned_frame,
+		ctrl_setup, //flaga dla usb_ctrl transakcja setup 
+		ctrl_in, //flaga dla usb_ctrl transakcja odczytu z urzadzenia
+		 ctrl_out,//flaga dla usb_ctrl transakcja zapisu do urzadzenia
+
 
 		// EP Interface
 		csr,
 		tx_data_st, //tx
-		rx_ctrl_data, //rx 
+
 		rx_ctrl_data_d, 
-		rx_ctrl_dvalid,
-		rx_ctrl_ddone,
+
 		idma_re, idma_we,
 		ep_empty, ep_full, send_stall
 
@@ -55,38 +50,27 @@ input		tx_ready;
 output		tx_first;
 input		tx_valid_out;
 
-output		token_valid;
+
 
 // Register File interface
-input	[6:0]	fa;		// Function Address (as set by the controller)
+input	[6:0]	function_addr;		// Function Address (as set by the controller)
 output	[3:0]	ep_sel;		// Endpoint Number Input
 output		x_busy;		// Indicates USB is busy
 
 output		int_crc16_set;	// Set CRC16 error interrupt
-output		int_to_set;	// Set time out interrupt
-output		int_seqerr_set;	// Set PID sequence error interrupt
 
-// Misc
-output		pid_cs_err;	// pid checksum error
-output		crc5_err;	// crc5 error
 output	[31:0]	frm_nat;
-output		nse_err;	// no such endpoint error
-output	[7:0]	rx_size;
-output		rx_done;
+
 output		ctrl_setup;
 output		ctrl_in;
 output		ctrl_out;
-//input		ep_bf_en;
-//input	[6:0]	ep_bf_size;
-//output		dropped_frame, misaligned_frame;
 
 // Endpoint Interfaces
 input	[13:0]	csr;	
 input	[7:0]	tx_data_st;
-output	[7:0]	rx_ctrl_data;
+
 output	[7:0]	rx_ctrl_data_d;
-output		rx_ctrl_dvalid;
-output		rx_ctrl_ddone;
+
 output		idma_re, idma_we;
 input		ep_empty;
 input		ep_full;
@@ -175,10 +159,10 @@ always @(posedge clk)
 	ctrl_setup <= #1 token_valid & pid_SETUP & (ep_sel==4'h0);
 
 always @(posedge clk)
-	ctrl_in <= #1 token_valid & pid_IN & (ep_sel==4'h0);
+	ctrl_in <= #1 token_valid & pid_IN ;//&(ep_sel==4'h0);
 
 always @(posedge clk)
-	ctrl_out <= #1 token_valid & pid_OUT & (ep_sel==4'h0);
+	ctrl_out <=  token_valid & pid_OUT ;//& (ep_sel==4'h0);
 
 // Frame Number (from SOF token)
 assign frame_no_we = token_valid & !crc5_err & pid_SOF;
@@ -218,7 +202,7 @@ always @(posedge clk)
 ///////////////////////////////////////////////////////////////////
 
 // This function is addressed
-assign fsel = (token_fadr == fa);
+assign fsel = (token_fadr == function_addr);
 
 // Only write when we are addressed !!!
 assign idma_we = idma_we_d & fsel; // moved full check to idma ...  & !ep_full;
@@ -229,7 +213,7 @@ assign idma_we = idma_we_d & fsel; // moved full check to idma ...  & !ep_full;
 //
 
 //Packet Decoder
-usb1_pd	u0(	.clk(		clk		),
+usb1_pd	u_pd(	.clk(		clk		),
 		.rst(		rst		),
 
 		.rx_data(	rx_data		),
@@ -258,16 +242,16 @@ usb1_pd	u0(	.clk(		clk		),
 		.token_valid(	token_valid	),
 		.crc5_err(	crc5_err	),
 		.frame_no(	frame_no	),
-		.rx_data_st(	rx_ctrl_data	),
+		.rx_data_out(	rx_ctrl_data	),
 		.rx_data_valid(	rx_ctrl_dvalid	),
 		.rx_data_done(	rx_ctrl_ddone	),
 		.crc16_err(	crc16_err	),
-		//.seq_err(	rx_seq_err	),
+
 		.rx_busy(	rx_busy		)
 		);
 
 // Packet Assembler
-usb1_pa	u1(	.clk(		clk		),
+usb1_pa	U_pa(	.clk(		clk		),
 		.rst(		rst		),
 		.tx_data(	tx_data		),
 		.tx_valid(	tx_valid	),
@@ -285,7 +269,7 @@ usb1_pa	u1(	.clk(		clk		),
 
 // Internal DMA / Memory Arbiter Interface
 usb1_idma
-	u2(	.clk(		clk		),
+	u_dma(	.clk(		clk		),
 		.rst(		rst		),
 
 		.tx_valid(	tx_valid	),
@@ -314,12 +298,11 @@ usb1_idma
 		);
 
 // Protocol Engine
-usb1_pe
-	u3(	.clk(			clk			),
+usb1_pe	u_pe(	.clk(			clk			),
 		.rst(			rst			),
 
-		.tx_valid(		tx_valid_out		),
-		.rx_active(		rx_active		),
+		.tx_valid_i(		tx_valid_out		),
+		.rx_active_i(		rx_active		),
 		.pid_OUT(		pid_OUT			),
 		.pid_IN(		pid_IN			),
 		.pid_SOF(		pid_SOF			),
@@ -330,28 +313,30 @@ usb1_pe
 		.pid_MDATA(		pid_MDATA		),
 		.pid_ACK(		pid_ACK			),
 		.pid_PING(		pid_PING		),
-		.token_valid(		token_valid		),
-		.rx_data_done(		rx_ctrl_ddone		),
-		.crc16_err(		crc16_err		),
-		.send_token(		send_token		),
-		.token_pid_sel(		token_pid_sel		),
-		.data_pid_sel(		data_pid_sel		),
-		.rx_dma_en(		rx_dma_en		),
-		.tx_dma_en(		tx_dma_en		),
-		//.abort(			abort			),
-		.idma_done(		idma_done		),
-		.fsel(			fsel			),
-		.ep_sel(		ep_sel			),
-		.ep_full(		ep_full			),
-		.ep_empty(		ep_empty		),
-		.match(			match_o			),
-		.nse_err(		nse_err			),
-		//.int_upid_set(		int_upid_set		),
-		.int_crc16_set(		int_crc16_set		),
-		.int_to_set(		int_to_set		),
-		.int_seqerr_set(	int_seqerr_set		),
-		.csr(			csr			),
-		.send_stall(		send_stall		)
+		.token_valid_i(		token_valid		),
+		.rx_data_done_i(		rx_ctrl_ddone		),
+
+		.crc16_err_i(		crc16_err		),
+		.send_token_o(		send_token		),
+		.token_pid_sel_o(		token_pid_sel		),
+		.data_pid_sel_o(		data_pid_sel		),
+		.rx_dma_en_o(		rx_dma_en		),
+		.tx_dma_en_o(		tx_dma_en		),
+
+		.idma_done_o(		idma_done		),
+		.fsel_i(			fsel			),
+		.ep_sel_i(		ep_sel			),
+		.ep_full_i(		ep_full			),
+		.ep_empty_i(		ep_empty		),
+		.match_i(			match_o			),
+		.nse_err_o(		nse_err			),
+
+		.int_crc16_set_o(		int_crc16_set		),
+		.int_to_set_o(		int_to_set		),
+		.int_seqerr_set_o(	int_seqerr_set		),
+		.csr_i(			csr			),
+		.send_stall_i(		send_stall		)
 		);
 
 endmodule
+
