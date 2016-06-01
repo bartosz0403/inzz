@@ -75,27 +75,14 @@ module usb1_ctrl(	clk, rst,
 
 			ctrl_setup, ctrl_in, ctrl_out, //protocol layer
 
-	///nie uzywane	
-		rx_ctrl_data, rx_ctrl_dvalid,rx_ctrl_ddone, // nie uzywane
+
 
 			ep0_din, ep0_dout, ep0_re, ep0_we, ep0_stat,
 			ep0_size,
 
 			send_stall, frame_no,
-			funct_adr, configured, halt,
-
-			v_set_int, v_set_feature, wValue, wIndex, vendor_data,
-
-	       // Register Interface
-		reg_addr,
-		reg_rdwrn,
-		reg_req,
-		reg_wdata,
-		reg_rdata,
-		reg_ack
-
-
-		);
+			funct_adr, configured, halt
+	);
 
 input		clk, rst;
 
@@ -106,11 +93,6 @@ input		ctrl_setup;
 input		ctrl_in;
 input		ctrl_out;
 
-// nie uywanr do usuniecoia
-input [7:0]     rx_ctrl_data; 
-input           rx_ctrl_dvalid;
-input           rx_ctrl_ddone;
-// nie uzywane do usuniecia 
 
 
 
@@ -125,22 +107,10 @@ input	[10:0]	frame_no;
 output	[6:0]	funct_adr;
 output		configured, halt;
 
-output		v_set_int;
-output		v_set_feature;
-output	[15:0]	wValue;
-output	[15:0]	wIndex;
-input	[15:0]	vendor_data;
+wire  [31:0]	reg_rdata;  // Register Read Data
 
-//-----------------------------------
-// Register Interface
-// ----------------------------------
-output [31:0]   reg_addr;   // Register Address
-output		reg_rdwrn;  // 0 -> write, 1-> read
-output		reg_req;    //  Register Req
-output [31:0]	reg_wdata;  // Register write data
-input  [31:0]	reg_rdata;  // Register Read Data
-input		reg_ack;    // Register Ack
-
+wire		reg_ack;    // Register Ack
+   wire   [15:0]   vendor_data;
 
 
 ///////////////////////////////////////////////////////////////////
